@@ -1,0 +1,7 @@
+# Copy to local.properties (git-ignored) and fill in.
+sdk.dir=/path/to/Android/Sdk
+
+# RevenueCat public Android SDK key (starts with goog_). Leave blank to run with billing "not configured".
+REVENUECAT_API_KEY=
+# OneSignal App ID. Leave blank to run with push "not configured".
+ONESIGNAL_APP_ID=
