@@ -1,6 +1,7 @@
 package com.cueback.app.ui.paywall
 
 import android.app.Activity
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -29,7 +30,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
@@ -123,7 +123,7 @@ fun PaywallScreen(onClose: () -> Unit) {
     val vm = containerViewModel { PaywallViewModel(it) }
     val ui by vm.ui.collectAsState()
     val ent by vm.entitlement.collectAsState()
-    val activity = LocalContext.current as Activity
+    val activity = LocalActivity.current
 
     Surface(Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
         Column(Modifier.fillMaxSize().statusBarsPadding().navigationBarsPadding()) {
@@ -164,7 +164,7 @@ fun PaywallScreen(onClose: () -> Unit) {
             Column(Modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 12.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 val plan = ui.plans.firstOrNull { it.id == ui.selected }
                 Button(
-                    onClick = { vm.purchase(activity) },
+                    onClick = { activity?.let(vm::purchase) },
                     enabled = plan != null && !ui.busy,
                     modifier = Modifier.fillMaxWidth(),
                 ) {

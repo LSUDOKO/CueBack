@@ -27,8 +27,8 @@ object UsageMapper {
         for (r in raw.sortedBy { it.timestamp }) when (r.kind) {
             RawUsage.Kind.RESUMED -> {
                 val pkg = r.packageName ?: continue
-                if (pkg == ownPackage) continue
-                val mapped = if (isTracked(pkg)) pkg else OTHER_APP
+                // CueBack itself counts as "elsewhere": reading a warm start is not yet working in the task.
+                val mapped = if (pkg != ownPackage && isTracked(pkg)) pkg else OTHER_APP
                 if (out.lastOrNull()?.let { it.type == EventType.APP_FOCUSED && it.packageName == mapped } == true) continue
                 out += WorkEvent(r.timestamp, EventType.APP_FOCUSED, packageName = mapped)
                 locked = false
@@ -75,12 +75,24 @@ object UsageMapper {
     }
 }
 
-class UsageCollector(private val context: Context) {
+/** Source of structured usage signals; the platform implementation is [UsageCollector]. */
+interface UsageSource {
+    fun hasPermission(): Boolean
+    fun events(from: Long, to: Long, isTracked: (String) -> Boolean): List<WorkEvent>
+    fun usageBetween(from: Long, to: Long): List<AppUsage>
+}
+
+class UsageCollector(private val context: Context) : UsageSource {
     private val usm = context.getSystemService(UsageStatsManager::class.java)
 
-    fun hasPermission(): Boolean {
+    override fun hasPermission(): Boolean {
         val ops = context.getSystemService(AppOpsManager::class.java)
-        val mode = ops.unsafeCheckOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, Process.myUid(), context.packageName)
+        val mode = if (android.os.Build.VERSION.SDK_INT >= 29) {
+            ops.unsafeCheckOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, Process.myUid(), context.packageName)
+        } else {
+            @Suppress("DEPRECATION")
+            ops.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, Process.myUid(), context.packageName)
+        }
         return mode == AppOpsManager.MODE_ALLOWED
     }
 
@@ -104,9 +116,9 @@ class UsageCollector(private val context: Context) {
         return out
     }
 
-    fun events(from: Long, to: Long, isTracked: (String) -> Boolean): List<WorkEvent> =
+    override fun events(from: Long, to: Long, isTracked: (String) -> Boolean): List<WorkEvent> =
         UsageMapper.toWorkEvents(raw(from, to), context.packageName, isTracked)
 
-    fun usageBetween(from: Long, to: Long): List<AppUsage> =
+    override fun usageBetween(from: Long, to: Long): List<AppUsage> =
         UsageMapper.foreground(raw(from, to), from, to, context.packageName)
 }

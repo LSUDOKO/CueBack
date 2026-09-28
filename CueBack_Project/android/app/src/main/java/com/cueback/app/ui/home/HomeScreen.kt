@@ -205,7 +205,7 @@ private fun SuggestionCard(ctx: ContextCapsule, s: Suggestion, onResume: () -> U
     ) {
         Column(Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                AppIcon(ctx.primaryApp, 22)
+                AppIcon(ctx.primaryApp, size = 22)
                 Text(
                     if (s.match.band == MatchBand.AUTO) "Looks like you're back" else "Were you returning to this?",
                     style = MaterialTheme.typography.labelLarge,
@@ -229,7 +229,7 @@ private fun ContextCard(ctx: ContextCapsule, onResume: () -> Unit, onOpen: () ->
     ) {
         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                AppIcon(ctx.primaryApp, 20)
+                AppIcon(ctx.primaryApp, size = 20)
                 Text(ctx.title.text, style = MaterialTheme.typography.titleMedium, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.weight(1f))
                 if (ctx.isDemo) Text("Demo", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.primary)
             }

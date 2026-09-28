@@ -38,8 +38,8 @@ import com.cueback.app.notify.NotificationKind
 import com.cueback.app.notify.NotificationPolicy
 import com.cueback.app.notify.Notifier
 import com.cueback.app.notify.PushService
-import com.cueback.app.platform.AppCatalog
-import com.cueback.app.platform.UsageCollector
+import com.cueback.app.platform.AppCatalogApi
+import com.cueback.app.platform.UsageSource
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -69,8 +69,8 @@ class DetectionCoordinator(
     private val settings: SettingsRepository,
     private val contexts: ContextRepository,
     private val reentry: ReentryRepository,
-    private val usage: UsageCollector,
-    private val catalog: AppCatalog,
+    private val usage: UsageSource,
+    private val catalog: AppCatalogApi,
     private val notifier: Notifier,
     private val push: PushService,
     private val billing: BillingRepository,

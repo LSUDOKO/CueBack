@@ -134,7 +134,7 @@ fun ContextDetailScreen(id: String, onBack: () -> Unit, onWarmStart: (String) ->
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                AppIcon(c.primaryApp, 26)
+                AppIcon(c.primaryApp, size = 26)
                 Column(Modifier.weight(1f)) {
                     Text(c.title.text, style = MaterialTheme.typography.headlineSmall)
                     Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
@@ -164,7 +164,7 @@ fun ContextDetailScreen(id: String, onBack: () -> Unit, onWarmStart: (String) ->
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(10.dp),
                     ) {
-                        AppIcon(a.sourcePackage, 20)
+                        AppIcon(a.sourcePackage, size = 20)
                         Column(Modifier.weight(1f)) {
                             Text(a.title ?: a.locator, style = MaterialTheme.typography.bodyMedium, maxLines = 2)
                             if (a.title != null) Text(a.locator, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 1)

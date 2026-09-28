@@ -206,7 +206,7 @@ fun WarmStartScreen(
                                 Text("Welcome back.", style = MaterialTheme.typography.displaySmall, modifier = Modifier.semantics { heading() })
                                 Text("You were on ${v.context.title.text}.", style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
                                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                                    AppIcon(v.context.primaryApp, 20)
+                                    AppIcon(v.context.primaryApp, size = 20)
                                     Text("Paused ${DeltaBuilder.formatDuration(v.warmStart.awayMs)} ago", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
                                     ConfidenceText(v.warmStart.matchScore)
                                     if (v.context.isDemo) Text("Demo replay", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.primary)
@@ -281,7 +281,7 @@ private fun Sections(v: WarmStartView, reduced: Boolean, open: (Artifact) -> Uni
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.spacedBy(10.dp),
                         ) {
-                            AppIcon(a.sourcePackage, 20)
+                            AppIcon(a.sourcePackage, size = 20)
                             Text(a.title ?: a.locator, style = MaterialTheme.typography.bodyMedium, modifier = Modifier.weight(1f), maxLines = 2)
                             Icon(Icons.AutoMirrored.Filled.OpenInNew, contentDescription = "Open", Modifier.padding(start = 4.dp))
                         }

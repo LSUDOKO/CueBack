@@ -115,7 +115,7 @@ private fun ResultRow(c: ContextCapsule, onClick: () -> Unit) {
         verticalAlignment = Alignment.Top,
         horizontalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        AppIcon(c.primaryApp, 24, Modifier.padding(top = 2.dp))
+        AppIcon(c.primaryApp, Modifier.padding(top = 2.dp), size = 24)
         Column(Modifier.weight(1f)) {
             Text(c.title.text, style = MaterialTheme.typography.titleMedium, maxLines = 1, overflow = TextOverflow.Ellipsis)
             Text(c.nextAction?.let { "Next: ${it.text}" } ?: "No next step recorded", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 2, overflow = TextOverflow.Ellipsis)

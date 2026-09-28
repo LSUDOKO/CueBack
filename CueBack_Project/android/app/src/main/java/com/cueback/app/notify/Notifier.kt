@@ -41,9 +41,11 @@ class Notifier(private val context: Context) {
         )
     }
 
-    fun canPost(): Boolean =
-        ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED &&
-            nm.areNotificationsEnabled()
+    fun canPost(): Boolean {
+        val granted = android.os.Build.VERSION.SDK_INT < 33 ||
+            ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED
+        return granted && nm.areNotificationsEnabled()
+    }
 
     fun resumeCandidate(ctx: ContextCapsule, appLabel: String?, private: Boolean) {
         val title = appLabel?.let { "You're back in $it" } ?: "Welcome back"

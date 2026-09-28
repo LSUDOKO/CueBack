@@ -101,7 +101,7 @@ class LiveDetectionService : Service() {
             this,
             Notifier.SERVICE_ID,
             container().notifier.serviceNotification(tracked),
-            ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE,
+            if (android.os.Build.VERSION.SDK_INT >= 34) ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE else 0,
         )
         startLoop()
         return START_STICKY

@@ -258,7 +258,7 @@ fun AppPickerScreen(onBack: () -> Unit, onPaywall: () -> Unit) {
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(12.dp),
                 ) {
-                    AppIcon(app.packageName, 32)
+                    AppIcon(app.packageName, size = 32)
                     Column(Modifier.weight(1f)) {
                         Text(app.label, style = MaterialTheme.typography.bodyLarge)
                         if (checked && app.packageName !in active) Hint("Selected, active with Pro")

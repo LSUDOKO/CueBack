@@ -8,8 +8,13 @@ import java.util.concurrent.ConcurrentHashMap
 
 data class InstalledApp(val packageName: String, val label: String)
 
+interface AppCatalogApi {
+    fun labelOf(pkg: String): String
+    fun versionOf(pkg: String): Long?
+}
+
 /** Launchable apps and their labels/versions. Only used locally; never sent anywhere. */
-class AppCatalog(private val context: Context) {
+class AppCatalog(private val context: Context) : AppCatalogApi {
     private val pm: PackageManager = context.packageManager
     private val labels = ConcurrentHashMap<String, String>()
 
@@ -23,7 +28,7 @@ class AppCatalog(private val context: Context) {
             .sortedBy { it.label.lowercase() }
     }
 
-    fun labelOf(pkg: String): String = labels.getOrPut(pkg) {
+    override fun labelOf(pkg: String): String = labels.getOrPut(pkg) {
         runCatching { pm.getApplicationLabel(pm.getApplicationInfo(pkg, 0)).toString() }
             .getOrElse { pkg.substringAfterLast('.').replaceFirstChar(Char::uppercase) }
     }
@@ -31,7 +36,7 @@ class AppCatalog(private val context: Context) {
     fun iconOf(pkg: String): Drawable? = runCatching { pm.getApplicationIcon(pkg) }.getOrNull()
 
     /** null when the app is not installed. */
-    fun versionOf(pkg: String): Long? = runCatching { pm.getPackageInfo(pkg, 0).longVersionCode }.getOrNull()
+    override fun versionOf(pkg: String): Long? = runCatching { pm.getPackageInfo(pkg, 0).longVersionCode }.getOrNull()
 
     fun launchIntent(pkg: String): Intent? = pm.getLaunchIntentForPackage(pkg)
 }

@@ -10,8 +10,13 @@ import javax.crypto.KeyGenerator
 import javax.crypto.SecretKey
 import javax.crypto.spec.GCMParameterSpec
 
+interface SecretStoreApi {
+    fun has(name: String): Boolean
+    fun get(name: String): String?
+}
+
 /** Stores the optional cloud-AI API key encrypted with an Android Keystore AES-GCM key. */
-class SecretStore(context: Context) {
+class SecretStore(context: Context) : SecretStoreApi {
     private val prefs = context.getSharedPreferences("cueback_secrets", Context.MODE_PRIVATE)
 
     private fun key(): SecretKey {
@@ -35,7 +40,7 @@ class SecretStore(context: Context) {
         prefs.edit().putString(name, blob).apply()
     }
 
-    fun get(name: String): String? {
+    override fun get(name: String): String? {
         val blob = prefs.getString(name, null) ?: return null
         return runCatching {
             val (iv, ct) = blob.split(":").map { Base64.decode(it, Base64.NO_WRAP) }
@@ -44,7 +49,7 @@ class SecretStore(context: Context) {
         }.getOrNull()
     }
 
-    fun has(name: String) = prefs.contains(name)
+    override fun has(name: String) = prefs.contains(name)
 
     fun clear() {
         prefs.edit().clear().apply()

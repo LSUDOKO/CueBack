@@ -28,7 +28,7 @@ data class AiSuggestion(val title: String? = null, val goal: String? = null, val
  * and returns structured JSON. Results are always labeled Inferred; user-provided facts are never
  * overwritten. If anything fails, the deterministic capsule stays as it is.
  */
-class AiRefiner(private val secrets: SecretStore) {
+class AiRefiner(private val secrets: SecretStoreApi) {
     private val json = Json { ignoreUnknownKeys = true }
 
     fun isReady(s: AppSettings) = s.cloudAiEnabled && ArtifactPolicy.safeWebUrl(s.aiBaseUrl)?.startsWith("https://") == true &&

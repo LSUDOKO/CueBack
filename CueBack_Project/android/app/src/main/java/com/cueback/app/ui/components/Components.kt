@@ -112,7 +112,7 @@ fun RibbonNext(fact: Fact?, modifier: Modifier = Modifier, large: Boolean = true
 }
 
 @Composable
-fun AppIcon(packageName: String?, size: Int = 28, modifier: Modifier = Modifier) {
+fun AppIcon(packageName: String?, modifier: Modifier = Modifier, size: Int = 28) {
     val ctx = LocalContext.current
     val app = ctx.applicationContext as CueBackApp
     val bmp = remember(packageName) {
