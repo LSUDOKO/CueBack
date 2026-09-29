@@ -34,6 +34,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
@@ -67,7 +69,7 @@ import java.time.LocalTime
 data class HomeUi(
     val open: List<ContextCapsule> = emptyList(),
     val suggestion: Suggestion? = null,
-    val health: DetectionHealth = DetectionHealth.ACTIVE,
+    val health: DetectionHealth? = null,
     val trackedLabels: List<String> = emptyList(),
     val entitlement: EntitlementState = EntitlementState.Loading,
     val recent: List<ReentryRecord> = emptyList(),
@@ -75,7 +77,7 @@ data class HomeUi(
 )
 
 class HomeViewModel(private val c: AppContainer) : ViewModel() {
-    private val health = MutableStateFlow(DetectionHealth.ACTIVE)
+    private val health = MutableStateFlow<DetectionHealth?>(null)
 
     val ui: StateFlow<HomeUi> = combine(
         c.contexts.observeOpen(),
@@ -134,6 +136,7 @@ fun HomeScreen(
         floatingActionButton = {
             ExtendedFloatingActionButton(
                 onClick = onCapture,
+                modifier = Modifier.semantics { contentDescription = "Save my place" },
                 icon = { Icon(Icons.Default.Add, contentDescription = null) },
                 text = { Text("Save my place") },
             )
@@ -184,7 +187,9 @@ private fun HealthLine(ui: HomeUi, onFix: () -> Unit) {
         DetectionHealth.OFF_NO_APPS -> "Automatic detection is off until you choose which apps to watch." to "Choose apps"
         DetectionHealth.OFF_NO_PERMISSION -> "Automatic detection needs usage access." to "Allow access"
         DetectionHealth.PAUSED -> "Detection is paused. Manual saves still work." to "Resume"
+        null -> return
         DetectionHealth.ACTIVE -> {
+            if (ui.trackedLabels.isEmpty()) return
             val gate = FeatureGate(ui.entitlement)
             val watched = ui.trackedLabels.take(gate.maxTrackedApps.coerceAtMost(ui.trackedLabels.size))
             "Watching ${watched.joinToString(", ")} for pauses and returns." to null

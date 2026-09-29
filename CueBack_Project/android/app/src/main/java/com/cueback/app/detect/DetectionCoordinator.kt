@@ -153,7 +153,10 @@ class DetectionCoordinator(
         val match = _suggestion.value?.takeIf { it.contextId == contextId }?.match
             ?: MatchResult(contextId, 1.0, MatchBand.AUTO, listOf("You chose this context"))
         val engine = ContextEngine(config, catalog::labelOf, { false }, newId)
-        val env = environment(s.useCase, s.showInterruptionAppNames, s.depthPreference, listOf(ctx), demo = ctx.isDemo)
+        val env = environment(
+            s.useCase, if (ctx.isDemo) true else s.showInterruptionAppNames, s.depthPreference, listOf(ctx), demo = ctx.isDemo,
+            fixtureAway = if (ctx.isDemo) DemoFixture.jwtRefresh(now).awayUsage else null,
+        )
         val ws = engine.warmStart(ctx, now, match, env, explicitFull)
         val capped = gate.cap(ws.level)
         return WarmStartView(ctx, ws.copy(level = capped), fullLocked = capped != ws.level)

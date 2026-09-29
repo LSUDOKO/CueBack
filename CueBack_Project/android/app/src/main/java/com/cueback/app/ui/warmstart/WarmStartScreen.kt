@@ -204,7 +204,7 @@ fun WarmStartScreen(
                         Staggered(0, reduced) {
                             Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
                                 Text("Welcome back.", style = MaterialTheme.typography.displaySmall, modifier = Modifier.semantics { heading() })
-                                Text("You were on ${v.context.title.text}.", style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                Text("You were on “${v.context.title.text}”.", style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
                                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                                     AppIcon(v.context.primaryApp, size = 20)
                                     Text("Paused ${DeltaBuilder.formatDuration(v.warmStart.awayMs)} ago", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)

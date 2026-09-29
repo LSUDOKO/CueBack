@@ -1,7 +1,8 @@
 package com.cueback.app
 
 import android.content.Context
-import androidx.datastore.preferences.preferencesDataStore
+import androidx.datastore.preferences.core.PreferenceDataStoreFactory
+import androidx.datastore.preferences.preferencesDataStoreFile
 import com.cueback.app.ai.AiRefiner
 import com.cueback.app.ai.SecretStore
 import com.cueback.app.billing.BillingRepository
@@ -22,8 +23,6 @@ import com.cueback.app.platform.ArtifactLauncher
 import com.cueback.app.platform.UsageCollector
 import java.util.UUID
 
-private val Context.dataStore by preferencesDataStore("cueback_settings")
-
 /** Manual dependency graph; one instance per process. */
 class AppContainer(context: Context) {
     private val app = context.applicationContext
@@ -31,7 +30,8 @@ class AppContainer(context: Context) {
     val newId: () -> String = { "ctx_" + UUID.randomUUID().toString().replace("-", "").take(20) }
 
     val db: CueBackDatabase = CueBackDatabase.build(app)
-    val settings = SettingsRepository(app.dataStore)
+    /** One DataStore per process: the container itself is a process singleton owned by [CueBackApp]. */
+    val settings = SettingsRepository(PreferenceDataStoreFactory.create { app.preferencesDataStoreFile("cueback_settings") })
     val contexts = ContextRepository(db, clock)
     val reentry = ReentryRepository(db) { "re_" + UUID.randomUUID().toString().replace("-", "").take(20) }
     val catalog = AppCatalog(app)

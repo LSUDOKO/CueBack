@@ -49,8 +49,13 @@ class BillingRepository(private val context: Context) {
     fun configure(appUserId: String) {
         if (!configured || Purchases.isConfigured) return
         if (BuildConfig.DEBUG) Purchases.logLevel = LogLevel.DEBUG
-        Purchases.configure(PurchasesConfiguration.Builder(context, apiKey).appUserID(appUserId).build())
-        Purchases.sharedInstance.updatedCustomerInfoListener = com.revenuecat.purchases.interfaces.UpdatedCustomerInfoListener { publish(it) }
+        // A vendor SDK failing to start must not take the app down with it; free features keep working.
+        try {
+            Purchases.configure(PurchasesConfiguration.Builder(context, apiKey).appUserID(appUserId).build())
+            Purchases.sharedInstance.updatedCustomerInfoListener = com.revenuecat.purchases.interfaces.UpdatedCustomerInfoListener { publish(it) }
+        } catch (e: RuntimeException) {
+            _state.value = EntitlementState.Error(e.message ?: "Billing failed to start")
+        }
     }
 
     suspend fun refresh() {

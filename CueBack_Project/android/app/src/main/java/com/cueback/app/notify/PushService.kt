@@ -21,8 +21,12 @@ class PushService(private val context: Context) {
     fun init(externalId: String) {
         if (!configured || initialized) return
         if (BuildConfig.DEBUG) OneSignal.Debug.logLevel = LogLevel.WARN
-        OneSignal.initWithContext(context, BuildConfig.ONESIGNAL_APP_ID)
-        OneSignal.login(externalId)
+        try {
+            OneSignal.initWithContext(context, BuildConfig.ONESIGNAL_APP_ID)
+            OneSignal.login(externalId)
+        } catch (e: RuntimeException) {
+            return // local notifications still work without push
+        }
         OneSignal.Notifications.addClickListener(object : INotificationClickListener {
             override fun onClick(event: INotificationClickEvent) {
                 val contextId = event.notification.additionalData?.optString("context_id")?.takeIf { it.isNotBlank() }

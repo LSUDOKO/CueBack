@@ -64,7 +64,7 @@ class DeltaBuilder(private val labelOf: (String) -> String) {
             val now = currentVersionOf(pkg)
             val then = ctx.primaryAppVersion
             when {
-                now == null -> items += DeltaItem(DeltaKind.APP_MISSING, "${labelOf(pkg)} is no longer installed", changed = true)
+                now == null && then != null -> items += DeltaItem(DeltaKind.APP_MISSING, "${labelOf(pkg)} is no longer installed", changed = true)
                 then != null && now != then -> items += DeltaItem(DeltaKind.APP_UPDATED, "${labelOf(pkg)} was updated while you were away", changed = true)
                 then != null -> items += DeltaItem(DeltaKind.APP_UNCHANGED, "${labelOf(pkg)} unchanged", changed = false)
             }

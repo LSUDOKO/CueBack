@@ -83,6 +83,17 @@
                 android:value="Detects, from app-usage metadata the user opted into, when a task is paused and resumed so the app can restore the user's working context." />
         </service>
 
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            android:exported="false"
+            tools:node="merge">
+            <meta-data
+                android:name="androidx.work.WorkManagerInitializer"
+                android:value="androidx.startup"
+                tools:node="remove" />
+        </provider>
+
         <receiver android:name=".notify.IntentReplyReceiver" android:exported="false" />
         <receiver android:name=".detect.BootReceiver" android:exported="false">
             <intent-filter>

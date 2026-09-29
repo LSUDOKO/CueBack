@@ -88,6 +88,8 @@ class MatcherAndDepthTest {
         val shown = db.build(ctx, T0 + 40 * MIN, listOf(AppUsage(WHATSAPP, 20 * MIN)), true, { null }, { null })
         assertTrue(shown.any { it.text.contains("WhatsApp") })
         assertTrue(shown.any { it.kind == DeltaKind.APP_MISSING })
+        val neverInstalled = db.build(ctx.copy(primaryAppVersion = null), T0 + 40 * MIN, emptyList(), true, { null }, { null })
+        assertFalse("can't claim uninstalled if it was never seen installed", neverInstalled.any { it.kind == DeltaKind.APP_MISSING })
     }
 
     @Test fun `duration formatting`() {
