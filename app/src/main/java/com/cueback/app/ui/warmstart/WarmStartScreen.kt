@@ -50,6 +50,7 @@ import com.cueback.app.billing.FeatureGate
 import com.cueback.app.core.engine.DeltaBuilder
 import com.cueback.app.core.model.Artifact
 import com.cueback.app.core.model.DeltaItem
+import com.cueback.app.core.model.DeltaKind
 import com.cueback.app.core.model.RecoveryLevel
 import com.cueback.app.data.repo.Metric
 import com.cueback.app.data.repo.WarmStartSource
@@ -213,13 +214,14 @@ fun WarmStartScreen(
                                 }
                             }
                         }
-                        Sections(v, reduced, vm::openArtifact)
-                        Staggered(6, reduced) {
+                        // The next action leads, so it is on screen without scrolling even on small phones; history supports it below.
+                        Staggered(1, reduced) {
                             Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                                 RibbonNext(v.context.nextAction)
                                 if (v.context.needsIntent) IntentInput(vm::setNext)
                             }
                         }
+                        Sections(v, reduced, vm::openArtifact)
                         ui.message?.let { Hint(it) }
                         VSpace(8)
                     }
@@ -306,9 +308,12 @@ fun DeltaList(delta: List<DeltaItem>) {
         Text("While you were away", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
         delta.forEach { d ->
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                Text(if (d.changed) "Changed" else "Same", style = MaterialTheme.typography.labelSmall,
-                    color = if (d.changed) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.secondary,
-                    modifier = Modifier.padding(top = 2.dp))
+                // Time away and interruptions are plain facts; only state that could have changed gets a Same/Changed tag.
+                if (d.kind != DeltaKind.TIME_AWAY && d.kind != DeltaKind.INTERRUPTIONS) {
+                    Text(if (d.changed) "Changed" else "Same", style = MaterialTheme.typography.labelSmall,
+                        color = if (d.changed) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.secondary,
+                        modifier = Modifier.padding(top = 2.dp))
+                }
                 Text(d.text, style = MaterialTheme.typography.bodyMedium)
             }
         }
@@ -357,3 +362,10 @@ private fun ReentryResult(seconds: Long, onDone: () -> Unit) {
 }
 
 fun formatSeconds(s: Long) = if (s < 90) "$s seconds" else "${s / 60} min ${s % 60} s"
+
+/** Compact form for lists: "42s", "3 min", "1 h 5 min". */
+fun formatSecondsShort(s: Long) = when {
+    s < 90 -> "${s}s"
+    s < 3600 -> "${(s + 30) / 60} min"
+    else -> "${s / 3600} h ${(s % 3600) / 60} min"
+}

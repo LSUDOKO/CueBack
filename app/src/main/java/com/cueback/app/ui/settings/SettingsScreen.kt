@@ -57,7 +57,7 @@ import com.cueback.app.ui.components.Hint
 import com.cueback.app.ui.components.SectionTitle
 import com.cueback.app.ui.components.containerViewModel
 
-const val PRIVACY_POLICY_URL = "https://github.com/LSUDOKO/CueBack/blob/main/CueBack_Project/PRIVACY_POLICY.md"
+const val PRIVACY_POLICY_URL = "https://github.com/LSUDOKO/CueBack/blob/main/PRIVACY_POLICY.md"
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

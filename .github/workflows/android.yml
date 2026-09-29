@@ -8,9 +8,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: CueBack_Project/android
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
@@ -28,4 +25,4 @@ jobs:
         if: always()
         with:
           name: reports
-          path: CueBack_Project/android/app/build/reports
+          path: app/build/reports

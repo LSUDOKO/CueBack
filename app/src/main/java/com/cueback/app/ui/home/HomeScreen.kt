@@ -267,8 +267,8 @@ private fun ReentryStrip(recent: List<ReentryRecord>) {
     val median = secs.sorted()[secs.size / 2]
     Column(Modifier.padding(top = 8.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
         SectionTitle("Your recent re-entries")
-        Text("Typically back in ${median}s", style = MaterialTheme.typography.titleLarge.copy(fontFamily = NoteSerif))
-        Hint("Last ${secs.size}: " + secs.joinToString(", ") { "${it}s" })
+        Text("Typically back in ${com.cueback.app.ui.warmstart.formatSecondsShort(median.toLong())}", style = MaterialTheme.typography.titleLarge.copy(fontFamily = NoteSerif))
+        Hint("Last ${secs.size}: " + secs.joinToString(", ") { com.cueback.app.ui.warmstart.formatSecondsShort(it.toLong()) })
     }
 }
 
