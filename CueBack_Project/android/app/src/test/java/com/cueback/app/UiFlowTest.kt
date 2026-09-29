@@ -81,7 +81,7 @@ class UiFlowTest {
     @Test fun demoWarmStartResumeAndReentry() {
         onboard()
         launch()
-        rule.waitUntil(5_000) { rule.onAllNodes(hasText("You're all set.")).fetchSemanticsNodes().isNotEmpty() }
+        rule.waitUntil(5_000) { rule.onAllNodes(hasText("Replay the demo story (debug build)")).fetchSemanticsNodes().isNotEmpty() }
         rule.onNodeWithText("Replay the demo story (debug build)").performClick()
         rule.waitUntil(5_000) { rule.onAllNodes(hasText("Welcome back.")).fetchSemanticsNodes().isNotEmpty() }
         rule.mainClock.advanceTimeBy(1_000)

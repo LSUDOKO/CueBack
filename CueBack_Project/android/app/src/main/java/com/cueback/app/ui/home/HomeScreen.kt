@@ -167,7 +167,7 @@ fun HomeScreen(
                 item { SuggestionCard(ctx, hero) { onWarmStart(ctx.id) } }
             }
             val rest = ui.open.filter { it.id != hero?.contextId }
-            if (ui.open.isEmpty()) item { EmptyState(onCapture) { vm.runDemo(onWarmStart) } }
+            if (ui.open.isEmpty()) item { EmptyState(watching = ui.trackedLabels.isNotEmpty(), onCapture) { vm.runDemo(onWarmStart) } }
             else if (rest.isNotEmpty()) item { SectionTitle(if (hero != null) "Also paused" else "Open contexts") }
             items(rest, key = { it.id }) { ctx -> ContextCard(ctx, onResume = { onWarmStart(ctx.id) }, onOpen = { onContext(ctx.id) }) }
             if (ui.recent.isNotEmpty()) item { ReentryStrip(ui.recent) }
@@ -178,7 +178,8 @@ fun HomeScreen(
 private fun greeting(): String = when (LocalTime.now().hour) {
     in 5..11 -> "Good morning"
     in 12..17 -> "Good afternoon"
-    else -> "Good evening"
+    in 18..22 -> "Good evening"
+    else -> "Working late"
 }
 
 @Composable
@@ -272,10 +273,15 @@ private fun ReentryStrip(recent: List<ReentryRecord>) {
 }
 
 @Composable
-private fun EmptyState(onCapture: () -> Unit, onDemo: () -> Unit) {
+private fun EmptyState(watching: Boolean, onCapture: () -> Unit, onDemo: () -> Unit) {
     Column(Modifier.fillMaxWidth().padding(vertical = 32.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-        Text("You're all set.", style = MaterialTheme.typography.headlineMedium)
-        Hint("CueBack will quietly remember where you stop in the apps you chose. You can also save your place yourself at any time.")
+        if (watching) {
+            Text("You're all set.", style = MaterialTheme.typography.headlineMedium)
+            Hint("CueBack will quietly remember where you stop in the apps you chose. You can also save your place yourself at any time.")
+        } else {
+            Text("Nothing saved yet.", style = MaterialTheme.typography.headlineMedium)
+            Hint("Save your place by hand whenever you step away, or choose apps to watch in Settings so CueBack does it for you.")
+        }
         OutlinedButton(onClick = onCapture) { Text("Save my place now") }
         if (BuildConfig.DEMO_FIXTURES) {
             TextButton(onClick = onDemo) { Text("Replay the demo story (debug build)") }

@@ -38,6 +38,12 @@ android {
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             buildConfigField("boolean", "DEMO_FIXTURES", "false")
+            // RevenueCat Test Store keys crash the SDK in non-debuggable builds, so release ships without billing instead.
+            val rcKey = secret("REVENUECAT_API_KEY")
+            if (rcKey.startsWith("test_")) {
+                logger.warn("REVENUECAT_API_KEY is a Test Store key; release build has billing disabled. Use the Google Play public SDK key (goog_...).")
+                buildConfigField("String", "REVENUECAT_API_KEY", "\"\"")
+            }
             signingConfig = signingConfigs.getByName("debug")
         }
     }

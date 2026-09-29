@@ -26,6 +26,8 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -34,6 +36,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import com.cueback.app.core.model.UseCase
 import com.cueback.app.ui.components.Hint
@@ -55,8 +58,13 @@ fun OnboardingScreen(onChooseApps: () -> Unit, onDone: () -> Unit) {
     var page by rememberSaveable { mutableIntStateOf(0) }
     val ctx = LocalContext.current
     val scope = rememberCoroutineScope()
-    LifecycleResumeEffect(Unit) { vm.refreshPermissions(); onPauseOrDispose { } }
-    val notifPermission = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { }
+    var notifOk by remember { mutableStateOf(NotificationManagerCompat.from(ctx).areNotificationsEnabled()) }
+    LifecycleResumeEffect(Unit) {
+        vm.refreshPermissions()
+        notifOk = NotificationManagerCompat.from(ctx).areNotificationsEnabled()
+        onPauseOrDispose { }
+    }
+    val notifPermission = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { notifOk = it }
 
     Surface(Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
         Column(Modifier.fillMaxSize().statusBarsPadding().navigationBarsPadding().padding(24.dp)) {
@@ -102,7 +110,7 @@ fun OnboardingScreen(onChooseApps: () -> Unit, onDone: () -> Unit) {
                             }
                             Step("2. Choose apps to watch", if (s.trackedApps.isEmpty()) "For example your browser, docs, terminal or notes app." else "${s.trackedApps.size} selected", s.trackedApps.isNotEmpty(), onChooseApps)
                             if (Build.VERSION.SDK_INT >= 33) {
-                                Step("3. Allow notifications", "So CueBack can say \"you're back\" and ask what's next.", false) {
+                                Step("3. Allow notifications", if (notifOk) "Allowed" else "So CueBack can say \"you're back\" and ask what's next.", notifOk) {
                                     notifPermission.launch(Manifest.permission.POST_NOTIFICATIONS)
                                 }
                             }

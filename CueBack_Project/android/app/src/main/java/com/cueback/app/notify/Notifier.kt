@@ -50,6 +50,9 @@ class Notifier(private val context: Context) {
     fun resumeCandidate(ctx: ContextCapsule, appLabel: String?, private: Boolean) {
         val title = appLabel?.let { "You're back in $it" } ?: "Welcome back"
         val body = ctx.nextAction?.let { "Next: ${it.text}" } ?: "You were on “${ctx.title.text}”."
+        // The return supersedes any pending "what's next?" prompt or reminder for the same context.
+        nm.cancel(ctx.id.hashCode() + INTENT_OFFSET)
+        nm.cancel(ctx.id.hashCode() + REMINDER_OFFSET)
         post(
             id = ctx.id.hashCode(),
             channel = CH_RESUME,
@@ -111,6 +114,7 @@ class Notifier(private val context: Context) {
             .setContentText("Watching $trackedCount selected app${if (trackedCount == 1) "" else "s"} · no screen or audio recording")
             .setContentIntent(openIntent("${DeepLinks.SCHEME}://home", 7))
             .setOngoing(true)
+            .setGroup(GROUP_SERVICE)
             .setPriority(NotificationCompat.PRIORITY_MIN)
             .build()
 
@@ -136,6 +140,8 @@ class Notifier(private val context: Context) {
             .setContentText(text)
             .setStyle(NotificationCompat.BigTextStyle().bigText(text))
             .setContentIntent(openIntent(deepLink, id))
+            // An explicit group per notification stops Android auto-bundling them behind a summary whose tap only opens the app.
+            .setGroup("cueback_$id")
             .setAutoCancel(true)
             .setCategory(NotificationCompat.CATEGORY_REMINDER)
             .setVisibility(if (private) NotificationCompat.VISIBILITY_PRIVATE else NotificationCompat.VISIBILITY_PUBLIC)
@@ -158,6 +164,7 @@ class Notifier(private val context: Context) {
         )
 
     companion object {
+        private const val GROUP_SERVICE = "cueback_service"
         const val CH_RESUME = "resume"
         const val CH_INTENT = "intent"
         const val CH_REMINDER = "reminder"

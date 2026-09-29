@@ -26,6 +26,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import com.revenuecat.purchases.PackageType
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -142,7 +143,13 @@ fun PaywallScreen(onClose: () -> Unit) {
                     return@Column
                 }
                 Text("Keep that continuity across every project.", style = MaterialTheme.typography.displaySmall)
-                Hint("You just resumed without rebuilding the task from scratch. Pro does that for all your work.")
+                Hint("Pick up any paused project exactly where you stopped, not just one.")
+                // Plans sit above the benefits so the choice is visible without scrolling.
+                when {
+                    ui.loading -> CircularProgressIndicator()
+                    ui.error != null -> Hint("Plans can't load right now: ${ui.error}")
+                    else -> ui.plans.forEach { p -> PlanRow(p, p.id == ui.selected) { vm.select(p.id) } }
+                }
                 VSpace(4)
                 BENEFITS.forEach { (t, d) ->
                     Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -153,16 +160,11 @@ fun PaywallScreen(onClose: () -> Unit) {
                         }
                     }
                 }
-                VSpace(4)
-                when {
-                    ui.loading -> CircularProgressIndicator()
-                    ui.error != null -> Hint("Plans can't load right now: ${ui.error}")
-                    else -> ui.plans.forEach { p -> PlanRow(p, p.id == ui.selected) { vm.select(p.id) } }
-                }
-                ui.message?.let { Text(it, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.error) }
             }
             Column(Modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 12.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 val plan = ui.plans.firstOrNull { it.id == ui.selected }
+                // Outside the scroll area, so a purchase result is always on screen next to the button.
+                ui.message?.let { Text(it, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.error) }
                 Button(
                     onClick = { activity?.let(vm::purchase) },
                     enabled = plan != null && !ui.busy,
@@ -174,10 +176,16 @@ fun PaywallScreen(onClose: () -> Unit) {
                     TextButton(onClick = onClose) { Text("Continue free") }
                     TextButton(onClick = vm::restore, enabled = !ui.busy && ui.error == null) { Text("Restore purchases") }
                 }
-                plan?.let { Hint("${it.trial?.let { t -> "$t, then " } ?: ""}${it.price} per ${if (it.type.name == "ANNUAL") "year" else "month"}. Cancel any time in Google Play.") }
+                plan?.let { Hint(priceLine(it)) }
             }
         }
     }
+}
+
+private fun priceLine(p: PlanOption): String = when (p.type) {
+    PackageType.LIFETIME -> "${p.price} once. Yours to keep, no subscription."
+    PackageType.ANNUAL -> "${p.trial?.let { "$it, then " } ?: ""}${p.price} per year. Cancel any time in Google Play."
+    else -> "${p.trial?.let { "$it, then " } ?: ""}${p.price} per month. Cancel any time in Google Play."
 }
 
 @Composable
