@@ -1,5 +1,8 @@
 # Monetization — RevenueCat
 
+> **Superseded.** This was the original pricing idea from the multi-platform design. The shipped Android plans, limits and RevenueCat integration are described in [BUSINESS_MODEL.md](BUSINESS_MODEL.md).
+
+
 ## 1. Monetization objective
 
 RevenueCat is part of the actual product, not a decorative hackathon integration.

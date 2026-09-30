@@ -1,0 +1,11 @@
+node_modules/
+out/
+.remotion/
+# Large or regenerable media: footage comes from the phone, the score from scripts/score.py
+public/footage/
+public/audio/
+# Uncropped dashboard captures (the cropped versions are used)
+public/shots/rc_overview.png
+public/shots/rc_transactions.png
+public/shots/rc_customers.png
+public/shots/problem_page.png

@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CueBack · Save your place</title>
+  <meta name="description" content="CueBack is an Android app that notices when you step away from work on your phone, keeps your place, and hands it back when you return. Built for RevenueCat Shipaton 2026.">
+  <meta name="theme-color" content="#080503">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="preload" href="assets/fonts/inter-tight.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="assets/site.css">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="CueBack · Don’t save the task. Save your place.">
+  <meta property="og:description" content="An Android app that notices when you step away, keeps your place, and hands it back when you return.">
+  <meta property="og:url" content="https://lsudoko.github.io/CueBack/">
+  <meta property="og:image" content="https://lsudoko.github.io/CueBack/images/social-preview.png">
+  <meta property="og:image:width" content="1280">
+  <meta property="og:image:height" content="640">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://lsudoko.github.io/CueBack/images/social-preview.png">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="CueBack home"><img src="assets/logo-96.png" alt="" width="36" height="36">CueBack</a>
+    <nav aria-label="Sections">
+      <ul>
+        <li><a href="#story">Why</a></li>
+        <li><a href="#walkthrough">How it works</a></li>
+        <li><a href="#screens">Screens</a></li>
+        <li><a href="#pro">Pro</a></li>
+        <li><a href="#privacy">Privacy</a></li>
+        <li><a href="#try">Try it</a></li>
+      </ul>
+    </nav>
+    <a class="btn btn-glass" href="https://github.com/LSUDOKO/CueBack">
+      <svg viewBox="0 0 16 16" aria-hidden="true" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38v-1.33c-2.23.48-2.7-1.07-2.7-1.07-.36-.92-.89-1.17-.89-1.17-.73-.5.05-.49.05-.49.8.06 1.23.83 1.23.83.72 1.22 1.87.87 2.33.66.07-.52.28-.87.5-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48v2.2c0 .21.15.46.55.38A8 8 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+      GitHub
+    </a>
+  </div>
+</header>
+
+<main id="main">
+  <!-- Hero -->
+  <section class="hero" id="top">
+    <div class="wrap">
+      <div>
+        <span class="badge"><span class="dot" aria-hidden="true"></span>Android · Built for RevenueCat Shipaton 2026</span>
+        <h1><span>Don’t save the task.</span> <span class="line2">Save your place.</span></h1>
+        <p class="lede">CueBack notices when you step away from work on your phone, keeps your place (the next step, the link, what you had), and hands it back the moment you return.</p>
+        <div class="cta">
+          <a class="btn btn-primary" href="https://github.com/LSUDOKO/CueBack/blob/main/docs/SETUP.md">Build it from source</a>
+          <a class="btn btn-glass" href="#walkthrough">See it work</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="halo" aria-hidden="true"></div>
+        <img class="owl" src="assets/mascot_hero.webp" alt="" width="720" height="720">
+        <div class="phone">
+          <picture>
+            <source media="(prefers-reduced-motion: reduce)" srcset="images/gifs/stills/welcome-back.jpg">
+            <img src="images/gifs/welcome-back.gif" width="320" height="630" alt="Screen recording: CueBack's welcome-back card says “Welcome back. You were on Physics 101: Problem Set 3” with the next step “Redo 7b, convert km to m first”. Tapping Resume reopens the problem set in Chrome.">
+          </picture>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Problem → fix -->
+  <section id="story">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">The problem, and the fix</p>
+        <h2>You didn’t forget the goal. You lost your place.</h2>
+      </div>
+      <div class="pf">
+        <div class="glass reveal">
+          <p class="label">The problem</p>
+          <blockquote>Interruptions rarely make you forget the goal. They make you forget where you were: what worked, what failed, and what you meant to do next.</blockquote>
+          <p class="muted" style="margin-top:18px">A notification, a call, a friend. Coming back, you scroll, reread and rebuild the thread in your head before any real work happens.</p>
+        </div>
+        <div class="glass fix reveal">
+          <p class="label">The fix</p>
+          <blockquote>CueBack keeps your place, not your to-do list.</blockquote>
+          <ul>
+            <li><b>Notices</b><span>when you step away: the screen locks, or you drift into other apps.</span></li>
+            <li><b>Keeps</b><span>the app, what you shared to it, and the one next step that matters.</span></li>
+            <li><b>Gives back</b><span>“You’re back in Chrome”, a welcome-back card, and a one-tap Resume.</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="stats">
+        <div class="glass stat reveal"><p class="n">1 tap</p><p>to resume. Resume reopens the exact page, file or video you shared.</p></div>
+        <div class="glass stat reveal"><p class="n">21 s</p><p>measured re-entry in the demo recording, from the welcome-back card to real work.</p></div>
+        <div class="glass stat reveal"><p class="n">0</p><p>screenshots, keystrokes or screen content recorded. It sees which app is open, not what’s in it.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Walkthrough -->
+  <section id="walkthrough">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">How it works</p>
+        <h2>One interruption, start to finish.</h2>
+        <p class="lede">Real recordings from a Moto g34. A student is working through a physics problem set in Chrome, gets pulled away, and comes back.</p>
+      </div>
+      <div class="steps">
+        <article class="glass step reveal">
+          <div>
+            <span class="step-num">1</span>
+            <h3>Save your place</h3>
+            <p>Share the page to CueBack and type the one thing you’d otherwise lose: <span class="hot">“Redo 7b, convert km to m first.”</span> Then lock the phone and go.</p>
+            <p class="note">With automatic detection on, CueBack also notices the pause by itself and asks for the next step only when it isn’t sure.</p>
+          </div>
+          <div class="step-media"><div class="phone sm"><picture>
+            <source media="(prefers-reduced-motion: reduce)" srcset="images/gifs/stills/save-your-place.jpg">
+            <img src="images/gifs/save-your-place.gif" width="320" height="630" loading="lazy" alt="Screen recording: from Chrome's menu the page is shared to CueBack; the Save to CueBack sheet appears and the next step “Redo 7b, convert km to m first” is typed and saved.">
+          </picture></div></div>
+        </article>
+
+        <article class="glass step reveal">
+          <div>
+            <span class="step-num">2</span>
+            <h3>You’re back in Chrome</h3>
+            <p>Open Chrome again and CueBack recognizes the return. A heads-up notification offers your next step, with Resume right there.</p>
+            <p class="note">Quick glances away don’t count: coming back within two minutes reattaches silently.</p>
+          </div>
+          <div class="step-media"><div class="wide"><picture>
+            <source media="(prefers-reduced-motion: reduce)" srcset="images/gifs/stills/youre-back.jpg">
+            <img src="images/gifs/youre-back.gif" width="360" height="300" loading="lazy" alt="Screen recording: over the problem set in Chrome, a notification slides in: “You're back in Chrome. Next: Redo 7b, convert km to…” with a Resume action.">
+          </picture></div></div>
+        </article>
+
+        <article class="glass step reveal">
+          <div>
+            <span class="step-num">3</span>
+            <h3>Welcome back</h3>
+            <p>The welcome-back card leads with what you said you’d do next, and how long ago you paused. One tap on <span class="hot">Resume where I left off</span> reopens the exact page.</p>
+            <p class="note">The card is sized to how long you were away: a light cue after a short break, more detail after a long one.</p>
+          </div>
+          <div class="step-media"><div class="phone sm"><picture>
+            <source media="(prefers-reduced-motion: reduce)" srcset="images/gifs/stills/welcome-back.jpg">
+            <img src="images/gifs/welcome-back.gif" width="320" height="630" loading="lazy" alt="Screen recording: “Finding your place…”, then the welcome-back card for Physics 101: Problem Set 3. Resume reopens the problem set in Chrome.">
+          </picture></div></div>
+        </article>
+
+        <article class="glass step reveal">
+          <div>
+            <span class="step-num">4</span>
+            <h3>Back in 21 seconds</h3>
+            <p>CueBack times the gap between the welcome-back card and your first stretch of real work in that app. It’s yours to keep, not a score, and Home shows your typical re-entry time.</p>
+          </div>
+          <div class="step-media"><div class="phone sm"><picture>
+            <source media="(prefers-reduced-motion: reduce)" srcset="images/gifs/stills/back-in.jpg">
+            <img src="images/gifs/back-in.gif" width="320" height="630" loading="lazy" alt="Screen recording: the owl celebrates with “Back in 21 seconds.”; tapping Done returns to Home, which shows the open place and “Typically back in 23s”.">
+          </picture></div></div>
+        </article>
+      </div>
+
+      <div class="more">
+        <article class="glass reveal">
+          <div class="phone sm"><picture>
+            <source media="(prefers-reduced-motion: reduce)" srcset="images/gifs/stills/other-apps.jpg">
+            <img src="images/gifs/other-apps.gif" width="320" height="630" loading="lazy" alt="Screen recording: a Wikipedia article and a GitHub source file are each shared to CueBack with their own next step.">
+          </picture></div>
+          <div><h3>Any app that shares</h3><p>A Wikipedia article, a file on GitHub, a lecture on YouTube: each becomes its own place with its own next step.</p></div>
+        </article>
+        <article class="glass reveal">
+          <div class="phone sm"><picture>
+            <source media="(prefers-reduced-motion: reduce)" srcset="images/gifs/stills/library.jpg">
+            <img src="images/gifs/library.gif" width="320" height="630" loading="lazy" alt="Screen recording: Home's open places, the Library list, a context's detail page and its welcome-back card.">
+          </picture></div>
+          <div><h3>Every place, kept</h3><p>Home shows what’s open. The Library searches everything you’ve paused, and any place can be resumed from its detail page.</p></div>
+        </article>
+        <article class="glass reveal">
+          <div class="phone sm"><picture>
+            <source media="(prefers-reduced-motion: reduce)" srcset="images/gifs/stills/onboarding.jpg">
+            <img src="images/gifs/onboarding.gif" width="320" height="630" loading="lazy" alt="Screen recording: onboarding pages: the promise, what CueBack sees and never records, choosing a use case, and three optional setup switches.">
+          </picture></div>
+          <div><h3>Set up in a minute</h3><p>Four short pages: the promise, what CueBack can and can’t see, how you work, and three optional switches.</p></div>
+        </article>
+      </div>
+
+      <div class="glass figure reveal" style="margin-top:28px">
+        <img src="images/how-it-works.png" width="1600" height="900" loading="lazy" alt="Diagram of the five steps. Watch: only the apps you pick; CueBack sees which one is in front and when the screen locks. Notice: a locked screen for 30 seconds, or five minutes in other apps, marks a pause. Keep: the app, anything you shared and the next step you typed. Match: reopening that app is scored against your saved places. Give back: a welcome-back card sized to how long you were gone, one-tap resume, timed re-entry.">
+      </div>
+      <p class="figure-cap">Under the hood: a pause score, a return score and a recovery depth, all computed on the phone. Details in the <a href="https://github.com/LSUDOKO/CueBack/blob/main/docs/SETUP.md">setup guide</a>.</p>
+    </div>
+  </section>
+
+  <!-- Screens -->
+  <section id="screens">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">Screens</p>
+        <h2>Every screen, in the Ember look.</h2>
+        <p class="lede">Rendered by the app’s own UI tests. Dark by design: the palette and Cue the owl are made for a dark ground.</p>
+      </div>
+      <ul class="gallery">
+        <li class="reveal"><div class="phone"><img src="images/screens/onboarding.png" width="540" height="1171" loading="lazy" alt="Onboarding: “Don't save the task. Save your place.”"></div><b>Onboarding</b><span>The promise in one line</span></li>
+        <li class="reveal"><div class="phone"><img src="images/screens/privacy.png" width="540" height="1171" loading="lazy" alt="What CueBack sees, what it never records, and where it lives"></div><b>Privacy</b><span>What it sees, what it never records</span></li>
+        <li class="reveal"><div class="phone"><img src="images/screens/use-case.png" width="540" height="1171" loading="lazy" alt="What do you mostly do? Coding, Study, Writing, Research, Design, General"></div><b>Use case</b><span>Tunes wording to your work</span></li>
+        <li class="reveal"><div class="phone"><img src="images/screens/setup.png" width="540" height="1171" loading="lazy" alt="Turn on automatic detection: usage access, apps to watch, notifications"></div><b>Setup</b><span>Three optional switches</span></li>
+        <li class="reveal"><div class="phone"><img src="images/screens/home-empty.png" width="540" height="1171" loading="lazy" alt="Home before anything is saved"></div><b>Home</b><span>Save your place by hand</span></li>
+        <li class="reveal"><div class="phone"><img src="images/screens/home.png" width="540" height="1171" loading="lazy" alt="Home with an open place, Climate essay, ready to resume"></div><b>Home</b><span>Open places, ready to resume</span></li>
+        <li class="reveal"><div class="phone"><img src="images/screens/capture.png" width="540" height="1171" loading="lazy" alt="Save my place: what were you about to do next?"></div><b>Save my place</b><span>Only the next step matters</span></li>
+        <li class="reveal"><div class="phone"><img src="images/screens/welcome-back.png" width="540" height="1171" loading="lazy" alt="Welcome-back card with the next step, what you had and the blocker"></div><b>Welcome back</b><span>Your next step comes first</span></li>
+        <li class="reveal"><div class="phone"><img src="images/screens/measuring.png" width="540" height="1171" loading="lazy" alt="Measuring your re-entry"></div><b>Measuring</b><span>Timing your way back in</span></li>
+        <li class="reveal"><div class="phone"><img src="images/screens/back-in.png" width="540" height="1171" loading="lazy" alt="Back in 2 seconds, with the owl"></div><b>Back in</b><span>Your re-entry time, not a score</span></li>
+        <li class="reveal"><div class="phone"><img src="images/screens/library.png" width="540" height="1171" loading="lazy" alt="Library search with filters"></div><b>Library</b><span>Search every paused place</span></li>
+        <li class="reveal"><div class="phone"><img src="images/screens/context.png" width="540" height="1171" loading="lazy" alt="Context detail: next step, goal, done and blocker, each tagged You said"></div><b>Context</b><span>What you said, what Cue saw</span></li>
+        <li class="reveal"><div class="phone"><img src="images/screens/settings.png" width="540" height="1171" loading="lazy" alt="Settings: detection, warm start and notification controls"></div><b>Settings</b><span>Every source under your control</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Pro -->
+  <section id="pro">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">CueBack Pro</p>
+        <h2>Upgrade when it’s earned.</h2>
+        <p class="lede">Free fully covers one task in one app. Pro is for people juggling several unfinished things across several apps. The paywall appears only after your first successful return, once you’ve felt it work.</p>
+      </div>
+      <div class="pro-grid">
+        <div class="glass tier reveal">
+          <h3>Free</h3>
+          <p class="sub">Keeps you going on one app</p>
+          <ul>
+            <li>3 open places</li>
+            <li>Watches 1 app</li>
+            <li>Welcome-back card and one-tap resume</li>
+            <li>Type or share your next step</li>
+            <li>Measured re-entry time</li>
+            <li>Export or delete everything</li>
+          </ul>
+        </div>
+        <div class="glass tier pro reveal">
+          <h3>Pro</h3>
+          <p class="sub">Entitlement <code>cueback_pro</code></p>
+          <ul>
+            <li>Unlimited places</li>
+            <li>Watches every app you choose</li>
+            <li>Full reconstruction for long breaks</li>
+            <li>Voice capture of the next step</li>
+            <li>Context timeline and reminders</li>
+          </ul>
+        </div>
+        <div class="glass tier reveal">
+          <h3>Plans</h3>
+          <p class="sub">From the current RevenueCat offering</p>
+          <ul class="plans">
+            <li class="best"><span class="name">Annual<small>$6.66 / month</small></span><span class="price">$79.99<small>per year</small></span></li>
+            <li><span class="name">Monthly</span><span class="price">$9.99<small>per month</small></span></li>
+            <li><span class="name">Lifetime</span><span class="price">$99.99<small>once</small></span></li>
+          </ul>
+          <p class="fine">Prices as configured in the RevenueCat Test Store.</p>
+        </div>
+      </div>
+
+      <div class="glass rc-row reveal">
+        <div>
+          <img class="rc-logo" src="images/revenuecat-logo-light.svg" width="852" height="180" alt="RevenueCat">
+          <h3>Purchases, restore and entitlements through RevenueCat.</h3>
+          <ol class="flow">
+            <li><span><b>Offering.</b> The paywall shows whatever packages the current offering holds, with store-formatted prices.</span></li>
+            <li><span><b>Paywall.</b> Shown once, after your first successful return. Also reachable from Settings and any Pro feature.</span></li>
+            <li><span><b>Purchase.</b> Through the RevenueCat SDK; tested with RevenueCat’s Test Store on a real phone.</span></li>
+            <li><span><b>Entitlement.</b> Pro unlocks only when <code>cueback_pro</code> is active in CustomerInfo. Nothing in the app can set it locally.</span></li>
+            <li><span><b>Restore.</b> Restore purchases any time, from the paywall or Settings.</span></li>
+          </ol>
+        </div>
+        <div class="step-media"><div class="phone sm"><picture>
+          <source media="(prefers-reduced-motion: reduce)" srcset="images/gifs/stills/pro-purchase.jpg">
+          <img src="images/gifs/pro-purchase.gif" width="320" height="630" loading="lazy" alt="Screen recording: the paywall with Annual $79.99, Monthly $9.99 and Lifetime $99.99; a RevenueCat Test Store purchase of the yearly plan; then “You have CueBack Pro.”">
+        </picture></div></div>
+      </div>
+
+      <div class="glass figure reveal" style="margin-top:20px">
+        <img src="images/business-model.png" width="1600" height="900" loading="lazy" alt="Business model: Free (3 open places, watches 1 app) versus Pro (unlimited places, every app, full reconstruction, voice capture, timeline and reminders); plans Annual $79.99, Monthly $9.99, Lifetime $99.99; flow Offering, Paywall, Purchase, cueback_pro entitlement, Pro unlocked.">
+      </div>
+      <p class="figure-cap">More in the <a href="https://github.com/LSUDOKO/CueBack/blob/main/docs/BUSINESS_MODEL.md">business model</a>.</p>
+    </div>
+  </section>
+
+  <!-- Privacy -->
+  <section id="privacy">
+    <div class="wrap">
+      <div class="section-head priv-head reveal" style="max-width:none">
+        <div style="max-width:760px">
+          <p class="eyebrow">Privacy</p>
+          <h2>It keeps your place, and keeps it private.</h2>
+          <p class="lede">Cue wears a padlock for a reason. CueBack knows enough to hand your place back, and no more.</p>
+        </div>
+        <img src="assets/mascot_think.webp" alt="" width="512" height="512" loading="lazy">
+      </div>
+      <div class="priv">
+        <div class="glass reveal"><h3>Only the apps you pick</h3><p>CueBack sees which of your chosen apps is in front and when the screen locks. That’s how it knows you paused and when you’re back.</p></div>
+        <div class="glass reveal"><h3>Never what’s on screen</h3><p>No screenshots, audio, keystrokes, messages, or the content of other apps.</p></div>
+        <div class="glass reveal"><h3>Links only when you share</h3><p>Links and files are saved only when you share them to CueBack yourself.</p></div>
+        <div class="glass reveal"><h3>Lives on this phone</h3><p>Your places are stored on the device. Export everything as JSON, or delete everything, from Settings.</p></div>
+        <div class="glass reveal"><h3>Cloud AI is off</h3><p>Off until you turn it on with a provider you choose. Secrets are redacted and file contents are never sent.</p></div>
+        <div class="glass reveal"><h3>You’re in control</h3><p>Pause collection at any time, hide details on the lock screen, and set quiet hours for notifications.</p></div>
+      </div>
+      <p class="figure-cap">Read the full <a href="https://github.com/LSUDOKO/CueBack/blob/main/PRIVACY_POLICY.md">privacy policy</a>.</p>
+    </div>
+  </section>
+
+  <!-- Try it -->
+  <section id="try">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">Try it</p>
+        <h2>Build it from source.</h2>
+        <p class="lede">CueBack isn’t on the Play Store yet. It builds and runs without any keys; billing and push then show a clear “not configured” state.</p>
+      </div>
+      <div class="try">
+        <div class="glass reveal">
+          <h3>Build and install</h3>
+          <p class="muted" style="margin-top:10px">You need JDK 21, the Android SDK, and an Android 9+ phone or emulator.</p>
+<pre><code>git clone https://github.com/LSUDOKO/CueBack.git
+cd CueBack
+cp local.properties.example local.properties
+<span class="c"># set sdk.dir in local.properties, then</span>
+./gradlew installDebug</code></pre>
+        </div>
+        <div class="glass reveal">
+          <h3>Optional keys</h3>
+          <ol>
+            <li><b>RevenueCat:</b> put the public app-specific key in <code>REVENUECAT_API_KEY</code>. A Test Store key (<code>test_…</code>) works in debug builds.</li>
+            <li><b>Entitlement:</b> create <code>cueback_pro</code> and attach your monthly, yearly and lifetime products to the current offering.</li>
+            <li><b>OneSignal:</b> put the App ID in <code>ONESIGNAL_APP_ID</code> for push. Only privacy-safe tags are sent, never task content.</li>
+          </ol>
+          <div class="cta">
+            <a class="btn btn-primary" href="https://github.com/LSUDOKO/CueBack/blob/main/docs/SETUP.md">Read the setup guide</a>
+            <a class="btn btn-glass" href="https://github.com/LSUDOKO/CueBack">View the repo</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <a class="brand" href="#top"><img src="assets/logo-96.png" alt="" width="36" height="36">CueBack</a>
+    <p>Built for RevenueCat Shipaton 2026 · Next Gen</p>
+    <nav aria-label="Footer">
+      <a href="https://github.com/LSUDOKO/CueBack">GitHub</a>
+      <a href="https://github.com/LSUDOKO/CueBack/blob/main/docs/SETUP.md">Setup</a>
+      <a href="https://github.com/LSUDOKO/CueBack/blob/main/PRIVACY_POLICY.md">Privacy policy</a>
+      <a href="https://github.com/LSUDOKO/CueBack/blob/main/LICENSE">Apache 2.0</a>
+      <a href="assets/fonts/OFL.txt">Inter Tight (OFL)</a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce || !("IntersectionObserver" in window)) return;
+    document.documentElement.classList.add("js");
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
+    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
+    document.querySelectorAll(".reveal").forEach(function (el) { io.observe(el); });
+  })();
+</script>
+</body>
+</html>
