@@ -185,7 +185,8 @@ fun PaywallScreen(onClose: () -> Unit) {
                 }
                 VSpace(8)
             }
-            Column(Modifier.fillMaxWidth().padding(horizontal = 22.dp, vertical = 12.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            // Someone who already has Pro has nothing to buy, so the purchase controls go away with the plans.
+            if (ent !is EntitlementState.Pro) Column(Modifier.fillMaxWidth().padding(horizontal = 22.dp, vertical = 12.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 val plan = ui.plans.firstOrNull { it.id == ui.selected }
                 // Outside the scroll area, so a purchase result is always on screen next to the button.
                 ui.message?.let { Text(it, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.error) }
