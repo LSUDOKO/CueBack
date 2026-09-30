@@ -65,6 +65,7 @@ class UiFlowTest {
         shot("02_onboarding_privacy")
         rule.onNodeWithText("Continue").performClick()
         rule.onNodeWithText("Study").performClick()
+        shot("02b_onboarding_usecase")
         rule.onNodeWithText("Continue").performClick()
         rule.onNodeWithText("Turn on automatic detection").assertExists()
         shot("03_onboarding_setup")
@@ -126,6 +127,24 @@ class UiFlowTest {
         rule.onNodeWithText("Search task, link, file, or app").performTextInput("essay")
         rule.waitUntil(5_000) { rule.onAllNodes(hasText("Climate essay")).fetchSemanticsNodes().isNotEmpty() }
         shot("10_library")
+    }
+
+    @Test fun contextDetailShowsThePlaceAndItsActions() {
+        onboard()
+        runBlocking {
+            val c = app.container
+            c.detection.saveManual(
+                c.builder.manual(c.newId(), c.clock(), "Quarterly report", "Send the draft to finance", "Pulled the Q3 numbers", "Waiting on the travel budget", "Write the summary paragraph", null, UseCase.WRITING),
+            )
+        }
+        launch()
+        rule.waitUntil(5_000) { rule.onAllNodes(hasText("Quarterly report")).fetchSemanticsNodes().isNotEmpty() }
+        rule.onNodeWithText("Quarterly report").performClick()
+        rule.waitUntil(5_000) { rule.onAllNodes(hasText("Mark done")).fetchSemanticsNodes().isNotEmpty() }
+        rule.onNodeWithText("Write the summary paragraph").assertExists()
+        rule.onNodeWithText("Waiting on the travel budget").assertExists()
+        rule.onNodeWithText("Resume").assertExists()
+        shot("12_context_detail")
     }
 
     @Test fun notificationDeepLinkOpensWarmStart() {

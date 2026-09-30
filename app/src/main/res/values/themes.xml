@@ -1,11 +1,12 @@
 <resources>
-    <style name="Theme.CueBack" parent="android:Theme.Material.Light.NoActionBar">
+    <!-- CueBack is dark-only: the ember palette and the mascot artwork are made for a dark ground. -->
+    <style name="Theme.CueBack" parent="android:Theme.Material.NoActionBar">
         <item name="android:windowBackground">@color/bg</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
-        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightStatusBar">false</item>
     </style>
-    <style name="Theme.CueBack.Sheet" parent="android:Theme.Material.Light.Dialog.NoActionBar">
+    <style name="Theme.CueBack.Sheet" parent="android:Theme.Material.Dialog.NoActionBar">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:backgroundDimEnabled">true</item>

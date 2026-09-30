@@ -1,5 +1,16 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
     android:width="108dp" android:height="108dp"
     android:viewportWidth="108" android:viewportHeight="108">
-    <path android:pathData="M0,0h108v108h-108z" android:fillColor="#0F5C63" />
+    <path android:pathData="M0,0h108v108h-108z" android:fillColor="#0B0604" />
+    <!-- Ember glow behind the owl -->
+    <path android:pathData="M0,0h108v108h-108z">
+        <aapt:attr name="android:fillColor">
+            <gradient android:type="radial" android:centerX="54" android:centerY="58" android:gradientRadius="58">
+                <item android:offset="0" android:color="#FFE8650E" />
+                <item android:offset="0.55" android:color="#FF7A2406" />
+                <item android:offset="1" android:color="#FF0B0604" />
+            </gradient>
+        </aapt:attr>
+    </path>
 </vector>

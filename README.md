@@ -12,12 +12,12 @@ CueBack notices when you step away from work on your phone, keeps your place, an
 ![Platform](https://img.shields.io/badge/platform-Android%209%2B-3DDC84?logo=android&logoColor=white)
 ![Kotlin](https://img.shields.io/badge/Kotlin-2.4-7F52FF?logo=kotlin&logoColor=white)
 ![Jetpack Compose](https://img.shields.io/badge/Jetpack%20Compose-Material%203-4285F4?logo=jetpackcompose&logoColor=white)
-![Tests](https://img.shields.io/badge/tests-64%20passing-2EA44F)
+![Tests](https://img.shields.io/badge/tests-65%20passing-2EA44F)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue)](LICENSE)
 
-<img src="docs/images/screens.png" alt="CueBack on a real phone: onboarding, home, welcome-back card and paywall" width="100%">
+<img src="docs/images/screens.jpg" alt="CueBack screens: onboarding with Cue the owl, home, the welcome-back card and a saved context" width="100%">
 
-<sub>Real screenshots from a Moto g34 (Android 15). The welcome-back card uses the built-in demo story, which runs through the real engine.</sub>
+<sub>Rendered by the app's own UI tests. The welcome-back card uses the built-in demo story, which runs through the real engine. The owl is Cue, who keeps your place.</sub>
 
 </div>
 
@@ -81,7 +81,8 @@ Other details:
 - **Reopens your exact spot.** Links shared to CueBack reopen at the same page or anchor, through a scheme allowlist.
 - **Respectful notifications.** Quiet hours, lock-screen privacy (only *"Your next action is ready"*), and at most one reminder per context.
 - **Two detection modes.** Live detection recognizes returns within seconds using a small foreground service; without it, WorkManager checks every 15 minutes.
-- **Light and dark themes, with reduced-motion support.**
+- **Cue, the owl.** An animated guide that hovers, glances around, reacts when tapped and changes pose with what the app is doing. All motion turns off with the system's reduced-motion setting.
+- **One dark "ember" look** across every screen: glass panels on a lit, grainy backdrop, set in Inter Tight. See the [design system](docs/DESIGN_SYSTEM.md).
 
 ## Project status
 
@@ -91,7 +92,7 @@ Other details:
 |---|:---:|---|
 | Context engine: segmentation, capsules, confidence, matching, recovery depth, what changed, re-entry | ✅ Done | Pure Kotlin, 31 unit tests |
 | Data layer: Room schema v1 (exported), repositories, DataStore settings | ✅ Done | |
-| UI: onboarding, home, welcome-back card, capture, context detail, library and search, settings, paywall | ✅ Done | Compose, Material 3, light and dark |
+| UI: onboarding, home, welcome-back card, capture, context detail, library and search, settings, paywall | ✅ Done | Compose, Material 3, dark ember design with the Cue mascot |
 | Automatic detection: usage access, app picker, live service, periodic fallback | ✅ Done | **Verified on a real phone**: a 5.5-minute pause was detected, the return was recognized, and the notification opened the welcome-back card |
 | Share target, voice capture, artifact relaunch | ✅ Done | |
 | Privacy controls: pause collection, export, delete all, redaction, encrypted AI key | ✅ Done | Covered by privacy tests |
@@ -203,7 +204,7 @@ Read the [privacy policy](PRIVACY_POLICY.md) and the [privacy and security desig
 ## Testing
 
 ```bash
-./gradlew :app:testDebugUnitTest   # 64 JVM tests (engine, data, privacy, UI flows via Robolectric)
+./gradlew :app:testDebugUnitTest   # 65 JVM tests (engine, data, privacy, UI flows via Robolectric)
 ./gradlew :app:lintDebug
 ./gradlew :app:assembleRelease     # R8-minified release build
 ```
@@ -212,7 +213,7 @@ Read the [privacy policy](PRIVACY_POLICY.md) and the [privacy and security desig
 |---|:---:|---|
 | `SessionSegmenterTest` · `ContextEngineTest` · `MatcherAndDepthTest` | 31 | Pause scoring, capsules, confidence, return matching, recovery depth, what changed |
 | `EndToEndTest` | 7 | Real engine and database: pause, capture, return, welcome-back card, re-entry |
-| `UiFlowTest` | 5 | Onboarding, demo welcome-back card, manual capture, notification deep link, settings. Saves screenshots to `app/build/ui-screens` |
+| `UiFlowTest` | 6 | Onboarding, demo welcome-back card, manual capture, context detail, notification deep link, settings. Saves screenshots to `app/build/ui-screens` |
 | Policy and privacy suites | 21 | Notification policy, deep links, feature gates, artifact scheme allowlist, share parsing, redaction, AI opt-in, usage mapping |
 
 Beyond the automated tests, the full pause-and-return loop, the notification deep link and Test Store purchases (valid, failed, cancelled, restore) have been checked by hand on a physical Android 15 phone.
@@ -239,6 +240,7 @@ Beyond the automated tests, the full pause-and-return loop, the notification dee
 | [docs/ROADMAP.md](docs/ROADMAP.md) | Scope, build phases and status |
 | [docs/CONTEXT_ENGINE.md](docs/CONTEXT_ENGINE.md) | How pauses, capsules and returns are detected |
 | [docs/PRODUCT_SPEC.md](docs/PRODUCT_SPEC.md) | Product definition and requirements |
+| [docs/DESIGN_SYSTEM.md](docs/DESIGN_SYSTEM.md) | Colours, type, components, the mascot and motion rules |
 | [docs/UX_UI_SPEC.md](docs/UX_UI_SPEC.md) | Screens, states and interaction rules |
 | [docs/PRIVACY_SECURITY.md](docs/PRIVACY_SECURITY.md) | Privacy and security design |
 | [docs/MONETIZATION.md](docs/MONETIZATION.md) | Free and Pro tiers, paywall |

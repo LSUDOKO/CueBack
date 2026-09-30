@@ -1,5 +1,14 @@
 package com.cueback.app.ui.detail
 
+import com.cueback.app.ui.components.EmberButton
+import com.cueback.app.ui.components.EmberScaffold
+import com.cueback.app.ui.components.GlassButton
+import com.cueback.app.ui.components.GlassCard
+import com.cueback.app.ui.components.GlassTextField
+import com.cueback.app.ui.theme.Ember
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.SwitchDefaults
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,23 +19,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.OpenInNew
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -106,7 +106,6 @@ class ContextDetailViewModel(private val c: AppContainer, private val id: String
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ContextDetailScreen(id: String, onBack: () -> Unit, onWarmStart: (String) -> Unit, onPaywall: () -> Unit) {
     val vm = containerViewModel(key = "detail_$id") { ContextDetailViewModel(it, id) }
@@ -114,30 +113,21 @@ fun ContextDetailScreen(id: String, onBack: () -> Unit, onWarmStart: (String) ->
     var confirmDelete by remember { mutableStateOf(false) }
     var editNext by remember { mutableStateOf(false) }
 
-    Scaffold(
-        containerColor = MaterialTheme.colorScheme.background,
-        topBar = {
-            TopAppBar(
-                title = { Text("Context") },
-                navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back") } },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background),
-            )
-        },
-    ) { pad ->
+    EmberScaffold(title = "Context", onBack = onBack) { pad ->
         val c = ui.context
         if (c == null) {
             Column(Modifier.padding(pad).padding(20.dp)) { if (ui.loaded) Hint("This context was deleted.") }
-            return@Scaffold
+            return@EmberScaffold
         }
         Column(
             Modifier.fillMaxSize().padding(pad).verticalScroll(rememberScrollState()).padding(horizontal = 20.dp, vertical = 8.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+            verticalArrangement = Arrangement.spacedBy(14.dp),
         ) {
-            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                AppIcon(c.primaryApp, size = 26)
+            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                AppIcon(c.primaryApp, size = 30)
                 Column(Modifier.weight(1f)) {
-                    Text(c.title.text, style = MaterialTheme.typography.headlineSmall)
-                    Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                    Text(c.title.text, style = MaterialTheme.typography.headlineSmall, color = Ember.Cream)
+                    Row(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
                         Hint(statusText(c))
                         ConfidenceText(c.confidence)
                     }
@@ -145,10 +135,11 @@ fun ContextDetailScreen(id: String, onBack: () -> Unit, onWarmStart: (String) ->
             }
             RibbonNext(c.nextAction, large = false)
             if (editNext) NextEditor(c.nextAction?.text.orEmpty()) { vm.setNext(it); editNext = false }
-            else TextButton(onClick = { editNext = true }) { Text(if (c.nextAction == null) "Add next step" else "Change next step") }
-
-            if (c.status == ContextStatus.PAUSED || c.status == ContextStatus.ACTIVE) {
-                Button(onClick = { onWarmStart(c.id) }, modifier = Modifier.fillMaxWidth()) { Text("Resume") }
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                if (c.status == ContextStatus.PAUSED || c.status == ContextStatus.ACTIVE) {
+                    EmberButton("Resume", { onWarmStart(c.id) }, Modifier.weight(1f))
+                }
+                if (!editNext) GlassButton(if (c.nextAction == null) "Add next step" else "Change next step", { editNext = true }, Modifier.weight(1f))
             }
             FactBlock("Goal", c.goal)
             FactBlock("Where it stood", c.currentState)
@@ -158,18 +149,20 @@ fun ContextDetailScreen(id: String, onBack: () -> Unit, onWarmStart: (String) ->
 
             if (c.artifacts.isNotEmpty()) {
                 SectionTitle("Artifacts")
-                c.artifacts.reversed().forEach { a ->
-                    Row(
-                        Modifier.fillMaxWidth().clickable { vm.open(a) }.padding(vertical = 6.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(10.dp),
-                    ) {
-                        AppIcon(a.sourcePackage, size = 20)
-                        Column(Modifier.weight(1f)) {
-                            Text(a.title ?: a.locator, style = MaterialTheme.typography.bodyMedium, maxLines = 2)
-                            if (a.title != null) Text(a.locator, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 1)
+                GlassCard(Modifier.fillMaxWidth(), shape = MaterialTheme.shapes.medium, padding = PaddingValues(horizontal = 14.dp, vertical = 6.dp)) {
+                    c.artifacts.reversed().forEach { a ->
+                        Row(
+                            Modifier.fillMaxWidth().clickable { vm.open(a) }.padding(vertical = 8.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(10.dp),
+                        ) {
+                            AppIcon(a.sourcePackage, size = 20)
+                            Column(Modifier.weight(1f)) {
+                                Text(a.title ?: a.locator, style = MaterialTheme.typography.bodyMedium, color = Ember.Cream, maxLines = 2)
+                                if (a.title != null) Text(a.locator, style = MaterialTheme.typography.bodySmall, color = Ember.Ash, maxLines = 1)
+                            }
+                            Icon(Icons.AutoMirrored.Filled.OpenInNew, contentDescription = "Open", tint = Ember.Glow, modifier = Modifier.size(18.dp))
                         }
-                        Icon(Icons.AutoMirrored.Filled.OpenInNew, contentDescription = "Open")
                     }
                 }
             }
@@ -185,25 +178,25 @@ fun ContextDetailScreen(id: String, onBack: () -> Unit, onWarmStart: (String) ->
                 ui.timeline.take(30).forEach { t -> Hint("${relativeTime(t.at)} — ${t.summary}") }
             } else {
                 Hint("See how this context evolved across sessions with Pro.")
-                TextButton(onClick = onPaywall) { Text("See Pro") }
+                GlassButton("See Pro", onPaywall)
             }
 
             SectionTitle("Evidence")
-            c.evidence.takeLast(12).forEach { Text(it, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant) }
+            c.evidence.takeLast(12).forEach { Text(it, style = MaterialTheme.typography.bodySmall, color = Ember.Ash) }
 
-            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+            HorizontalDivider(color = Ember.GlassStrokeTop)
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text("Reminders for this context", style = MaterialTheme.typography.bodyLarge, modifier = Modifier.weight(1f))
+                Text("Reminders for this context", style = MaterialTheme.typography.bodyLarge, color = Ember.Cream, modifier = Modifier.weight(1f))
                 Switch(checked = !c.muted, onCheckedChange = { vm.mute(!it) })
             }
-            if (ui.aiReady) OutlinedButton(onClick = vm::refineWithAi, modifier = Modifier.fillMaxWidth()) { Text("Refine with cloud AI") }
+            if (ui.aiReady) GlassButton("Refine with cloud AI", vm::refineWithAi, Modifier.fillMaxWidth())
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 if (c.status == ContextStatus.COMPLETED || c.status == ContextStatus.ARCHIVED) {
-                    OutlinedButton(onClick = vm::reopen, modifier = Modifier.weight(1f)) { Text("Reopen") }
+                    GlassButton("Reopen", vm::reopen, Modifier.weight(1f))
                 } else {
-                    OutlinedButton(onClick = vm::complete, modifier = Modifier.weight(1f)) { Text("Mark done") }
+                    GlassButton("Mark done", vm::complete, Modifier.weight(1f))
                 }
-                TextButton(onClick = { confirmDelete = true }, modifier = Modifier.weight(1f)) { Text("Delete", color = MaterialTheme.colorScheme.error) }
+                GlassButton("Delete", { confirmDelete = true }, Modifier.weight(1f), contentColor = MaterialTheme.colorScheme.error)
             }
             Column(Modifier.padding(bottom = 32.dp)) {}
         }
@@ -229,8 +222,8 @@ private fun statusText(c: ContextCapsule) = when (c.status) {
 @Composable
 private fun NextEditor(initial: String, onSave: (String) -> Unit) {
     var text by remember { mutableStateOf(initial) }
-    Column {
-        OutlinedTextField(text, { if (it.length <= 300) text = it }, label = { Text("What were you about to do next?") }, modifier = Modifier.fillMaxWidth())
-        TextButton(onClick = { onSave(text) }, enabled = text.isNotBlank()) { Text("Save next step") }
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        GlassTextField(text, { if (it.length <= 300) text = it }, label = "What were you about to do next?", modifier = Modifier.fillMaxWidth())
+        GlassButton("Save next step", { onSave(text) }, enabled = text.isNotBlank())
     }
 }

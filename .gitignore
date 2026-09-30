@@ -8,3 +8,6 @@ captures/
 *.keystore
 *.jks
 keystore.properties
+
+# Local design references (third-party shots and source art); the app uses the processed files in res/
+/assets/

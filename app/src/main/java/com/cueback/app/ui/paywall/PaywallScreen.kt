@@ -1,8 +1,25 @@
 package com.cueback.app.ui.paywall
 
+import com.cueback.app.ui.components.EmberButton
+import com.cueback.app.ui.components.GlassButton
+import com.cueback.app.ui.components.GlassIconButton
+import com.cueback.app.ui.components.Mascot
+import com.cueback.app.ui.components.MascotPose
+import com.cueback.app.ui.components.glass
+import com.cueback.app.ui.theme.Backdrop
+import com.cueback.app.ui.theme.Ember
+import com.cueback.app.ui.theme.EmberBackdrop
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.background
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.material3.RadioButtonDefaults
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.ui.graphics.Color
 import android.app.Activity
 import androidx.activity.compose.LocalActivity
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,13 +33,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -126,57 +139,67 @@ fun PaywallScreen(onClose: () -> Unit) {
     val ent by vm.entitlement.collectAsState()
     val activity = LocalActivity.current
 
-    Surface(Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
+    EmberBackdrop(Backdrop.Night) {
         Column(Modifier.fillMaxSize().statusBarsPadding().navigationBarsPadding()) {
-            Row(Modifier.fillMaxWidth().padding(8.dp)) {
-                IconButton(onClick = onClose) { Icon(Icons.Default.Close, contentDescription = "Close") }
+            Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp)) {
+                GlassIconButton(Icons.Default.Close, "Close", onClose)
             }
             Column(
-                Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(horizontal = 24.dp),
-                verticalArrangement = Arrangement.spacedBy(14.dp),
+                Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(horizontal = 22.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp),
             ) {
                 if (ent is EntitlementState.Pro) {
                     val pro = ent as EntitlementState.Pro
-                    Text("You have CueBack Pro.", style = MaterialTheme.typography.displaySmall)
+                    Box(Modifier.fillMaxWidth().padding(vertical = 12.dp), contentAlignment = Alignment.Center) { Mascot(MascotPose.Wave, size = 170.dp) }
+                    Text("You have CueBack Pro.", style = MaterialTheme.typography.displaySmall, color = Ember.Cream)
                     Hint(if (pro.isTrial) "You're in your free trial. Manage or cancel any time in Google Play." else "Thanks for supporting CueBack. Manage your subscription in Google Play.")
-                    Button(onClick = onClose) { Text("Done") }
+                    VSpace(8)
+                    EmberButton("Done", onClose)
                     return@Column
                 }
-                Text("Keep that continuity across every project.", style = MaterialTheme.typography.displaySmall)
+                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                    Text(
+                        "Keep that continuity across every project.",
+                        style = MaterialTheme.typography.headlineLarge,
+                        color = Ember.Cream,
+                        modifier = Modifier.weight(1f),
+                    )
+                    Mascot(MascotPose.Hero, size = 112.dp)
+                }
                 Hint("Pick up any paused project exactly where you stopped, not just one.")
                 // Plans sit above the benefits so the choice is visible without scrolling.
                 when {
-                    ui.loading -> CircularProgressIndicator()
+                    ui.loading -> CircularProgressIndicator(color = Ember.Glow)
                     ui.error != null -> Hint("Plans can't load right now: ${ui.error}")
                     else -> ui.plans.forEach { p -> PlanRow(p, p.id == ui.selected) { vm.select(p.id) } }
                 }
                 VSpace(4)
                 BENEFITS.forEach { (t, d) ->
                     Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                        Text("•", color = Ribbon, style = MaterialTheme.typography.titleLarge)
+                        Box(Modifier.padding(top = 7.dp).size(8.dp).background(Ribbon, CircleShape))
                         Column {
-                            Text(t, style = MaterialTheme.typography.titleMedium)
+                            Text(t, style = MaterialTheme.typography.titleMedium, color = Ember.Cream)
                             Hint(d)
                         }
                     }
                 }
+                VSpace(8)
             }
-            Column(Modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 12.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+            Column(Modifier.fillMaxWidth().padding(horizontal = 22.dp, vertical = 12.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 val plan = ui.plans.firstOrNull { it.id == ui.selected }
                 // Outside the scroll area, so a purchase result is always on screen next to the button.
                 ui.message?.let { Text(it, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.error) }
-                Button(
+                EmberButton(
+                    if (plan?.trial != null) "Start free trial" else "Continue with Pro",
                     onClick = { activity?.let(vm::purchase) },
                     enabled = plan != null && !ui.busy,
                     modifier = Modifier.fillMaxWidth(),
-                ) {
-                    Text(if (plan?.trial != null) "Start free trial" else "Continue with Pro", modifier = Modifier.padding(vertical = 6.dp))
+                )
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.fillMaxWidth()) {
+                    GlassButton("Continue free", onClose, Modifier.weight(1f))
+                    GlassButton("Restore purchases", vm::restore, Modifier.weight(1f), enabled = !ui.busy && ui.error == null)
                 }
-                Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
-                    TextButton(onClick = onClose) { Text("Continue free") }
-                    TextButton(onClick = vm::restore, enabled = !ui.busy && ui.error == null) { Text("Restore purchases") }
-                }
-                plan?.let { Hint(priceLine(it)) }
+                plan?.let { Text(priceLine(it), style = MaterialTheme.typography.bodySmall, color = Ember.Ash, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth()) }
             }
         }
     }
@@ -190,19 +213,20 @@ private fun priceLine(p: PlanOption): String = when (p.type) {
 
 @Composable
 private fun PlanRow(p: PlanOption, selected: Boolean, onSelect: () -> Unit) {
-    Surface(
-        shape = MaterialTheme.shapes.medium,
-        color = MaterialTheme.colorScheme.surface,
-        border = BorderStroke(if (selected) 2.dp else 1.dp, if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant),
-        modifier = Modifier.fillMaxWidth().clickable(role = Role.RadioButton, onClick = onSelect),
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .glass(MaterialTheme.shapes.medium, if (selected) Ember.GlassStrong else Ember.Glass)
+            .then(if (selected) Modifier.border(1.5.dp, Ember.Flame, MaterialTheme.shapes.medium) else Modifier)
+            .clickable(role = Role.RadioButton, onClick = onSelect)
+            .padding(horizontal = 8.dp, vertical = 10.dp),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
-        Row(Modifier.padding(14.dp), verticalAlignment = Alignment.CenterVertically) {
-            RadioButton(selected = selected, onClick = onSelect)
-            Column(Modifier.weight(1f)) {
-                Text(p.title, style = MaterialTheme.typography.titleMedium)
-                listOfNotNull(p.trial, p.perMonth).takeIf { it.isNotEmpty() }?.let { Hint(it.joinToString(", ")) }
-            }
-            Text(p.price, style = MaterialTheme.typography.titleMedium)
+        RadioButton(selected = selected, onClick = onSelect, colors = RadioButtonDefaults.colors(selectedColor = Ember.Flame, unselectedColor = Ember.Ash))
+        Column(Modifier.weight(1f)) {
+            Text(p.title, style = MaterialTheme.typography.titleMedium, color = Ember.Cream)
+            listOfNotNull(p.trial, p.perMonth).takeIf { it.isNotEmpty() }?.let { Hint(it.joinToString(", ")) }
         }
+        Text(p.price, style = MaterialTheme.typography.titleMedium, color = Ember.Cream, modifier = Modifier.padding(end = 10.dp))
     }
 }

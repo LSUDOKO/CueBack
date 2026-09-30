@@ -1,6 +1,6 @@
 # CueBack roadmap (Android-only release)
 
-> **Status, 30 Sep 2026:** about 85% complete. Product code for every phase is done and tested (64 tests; pause and return detection verified on a physical Android 15 phone). Remaining work is account configuration and store release. See the [README](../README.md#project-status).
+> **Status, 30 Sep 2026:** about 85% complete. Product code for every phase is done and tested (65 tests; pause and return detection verified on a physical Android 15 phone). Remaining work is account configuration and store release. See the [README](../README.md#project-status).
 
 Shipaton 2026 requires a working mobile app with RevenueCat. The desktop companion and Go backend
 described in the original docs are **out of scope** for this release; every signal the engine uses

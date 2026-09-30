@@ -1,5 +1,12 @@
 package com.cueback.app.ui.library
 
+import com.cueback.app.ui.components.EmberChip
+import com.cueback.app.ui.components.EmberScaffold
+import com.cueback.app.ui.components.GlassCard
+import com.cueback.app.ui.components.GlassTextField
+import com.cueback.app.ui.components.MascotPose
+import com.cueback.app.ui.components.MascotSays
+import com.cueback.app.ui.theme.Ember
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,18 +18,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilterChip
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -66,43 +63,35 @@ private val CHIPS = listOf(
     Chip("Writing", { it.useCase == UseCase.WRITING }) { it.copy(useCase = if (it.useCase == UseCase.WRITING) null else UseCase.WRITING) },
 )
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LibraryScreen(onBack: () -> Unit, onContext: (String) -> Unit) {
     val vm = containerViewModel { LibraryViewModel(it) }
     val filter by vm.filter.collectAsState()
     val results by vm.results.collectAsState()
 
-    Scaffold(
-        containerColor = MaterialTheme.colorScheme.background,
-        topBar = {
-            TopAppBar(
-                title = { Text("Library") },
-                navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back") } },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background),
-            )
-        },
-    ) { pad ->
+    EmberScaffold(title = "Library", onBack = onBack) { pad ->
         LazyColumn(
             Modifier.fillMaxSize().padding(pad),
             contentPadding = PaddingValues(horizontal = 20.dp, vertical = 8.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp),
         ) {
             item {
-                OutlinedTextField(
+                GlassTextField(
                     value = filter.query,
                     onValueChange = { q -> vm.filter.value = filter.copy(query = q.take(100)) },
-                    label = { Text("Search task, link, file, or app") },
+                    label = "Search task, link, file, or app",
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth(),
                 )
             }
             item {
-                LazyRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                    items(CHIPS) { chip -> FilterChip(selected = chip.selected(filter), onClick = { vm.filter.value = chip.toggle(filter) }, label = { Text(chip.label) }) }
+                LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    items(CHIPS) { chip -> EmberChip(chip.label, selected = chip.selected(filter), onClick = { vm.filter.value = chip.toggle(filter) }) }
                 }
             }
-            if (results.isEmpty()) item { Hint("No contexts match. Try a different word or clear the filters.", Modifier.padding(top = 24.dp)) }
+            if (results.isEmpty()) item {
+                MascotSays("No contexts match. Try a different word or clear the filters.", Modifier.padding(top = 20.dp), pose = MascotPose.Think)
+            }
             items(results, key = { it.id }) { c -> ResultRow(c) { onContext(c.id) } }
         }
     }
@@ -110,16 +99,14 @@ fun LibraryScreen(onBack: () -> Unit, onContext: (String) -> Unit) {
 
 @Composable
 private fun ResultRow(c: ContextCapsule, onClick: () -> Unit) {
-    Row(
-        Modifier.fillMaxWidth().clickable(onClick = onClick).padding(vertical = 8.dp),
-        verticalAlignment = Alignment.Top,
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
-    ) {
-        AppIcon(c.primaryApp, Modifier.padding(top = 2.dp), size = 24)
-        Column(Modifier.weight(1f)) {
-            Text(c.title.text, style = MaterialTheme.typography.titleMedium, maxLines = 1, overflow = TextOverflow.Ellipsis)
-            Text(c.nextAction?.let { "Next: ${it.text}" } ?: "No next step recorded", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 2, overflow = TextOverflow.Ellipsis)
-            Text("${c.status.name.lowercase().replaceFirstChar(Char::uppercase)}, ${relativeTime(c.pausedAt ?: c.createdAt)}", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+    GlassCard(Modifier.fillMaxWidth(), shape = MaterialTheme.shapes.medium, onClick = onClick, padding = PaddingValues(14.dp)) {
+        Row(verticalAlignment = Alignment.Top, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+            AppIcon(c.primaryApp, Modifier.padding(top = 2.dp), size = 26)
+            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                Text(c.title.text, style = MaterialTheme.typography.titleMedium, color = Ember.Cream, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                Text(c.nextAction?.let { "Next: ${it.text}" } ?: "No next step recorded", style = MaterialTheme.typography.bodyMedium, color = Ember.Ash, maxLines = 2, overflow = TextOverflow.Ellipsis)
+                Text("${c.status.name.lowercase().replaceFirstChar(Char::uppercase)}, ${relativeTime(c.pausedAt ?: c.createdAt)}", style = MaterialTheme.typography.labelSmall, color = Ember.Ash)
+            }
         }
     }
 }

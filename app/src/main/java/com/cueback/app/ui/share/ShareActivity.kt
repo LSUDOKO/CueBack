@@ -15,13 +15,11 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
@@ -38,7 +36,12 @@ import com.cueback.app.core.model.ArtifactType
 import com.cueback.app.core.model.ContextCapsule
 import com.cueback.app.core.model.NoteKind
 import com.cueback.app.platform.ArtifactPolicy
+import com.cueback.app.ui.components.EmberButton
+import com.cueback.app.ui.components.GlassButton
+import com.cueback.app.ui.components.GlassTextField
 import com.cueback.app.ui.components.Hint
+import com.cueback.app.ui.components.MascotAvatar
+import com.cueback.app.ui.theme.Ember
 import com.cueback.app.ui.theme.CueBackTheme
 import kotlinx.coroutines.launch
 
@@ -82,22 +85,31 @@ class ShareActivity : ComponentActivity() {
                 val live by produceState(false) { value = container.detection.openSessionActive() }
                 var target by remember { mutableStateOf<String?>(null) }
                 var next by remember { mutableStateOf("") }
-                Surface(shape = MaterialTheme.shapes.large, color = MaterialTheme.colorScheme.surface, modifier = Modifier.fillMaxWidth()) {
+                Surface(
+                    shape = MaterialTheme.shapes.large,
+                    color = MaterialTheme.colorScheme.surface,
+                    contentColor = Ember.Cream,
+                    border = BorderStroke(1.dp, Ember.GlassStrokeTop),
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
                     Column(Modifier.padding(20.dp).heightIn(max = 560.dp).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                        Text("Save to CueBack", style = MaterialTheme.typography.titleLarge)
+                        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                            MascotAvatar(size = 36.dp)
+                            Text("Save to CueBack", style = MaterialTheme.typography.titleLarge)
+                        }
                         Hint(artifact.title ?: artifact.locator)
                         Option(if (live) "Current work session" else "A new place to resume", target == null) { target = null }
                         open.take(6).forEach { c -> Option(c.title.text, target == c.id) { target = c.id } }
-                        OutlinedTextField(next, { next = it.take(300) }, label = { Text("Next step (optional)") }, modifier = Modifier.fillMaxWidth())
-                        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-                            TextButton(onClick = { finish() }) { Text("Cancel") }
-                            Button(onClick = {
+                        GlassTextField(next, { next = it.take(300) }, label = "Next step (optional)", modifier = Modifier.fillMaxWidth())
+                        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End), verticalAlignment = Alignment.CenterVertically) {
+                            GlassButton("Cancel", { finish() })
+                            EmberButton("Save", {
                                 lifecycleScope.launch {
                                     container.detection.addShared(artifact, target)
                                     if (next.isNotBlank()) container.detection.addNote(target, NoteKind.NEXT, next)
                                     finish()
                                 }
-                            }) { Text("Save") }
+                            })
                         }
                     }
                 }

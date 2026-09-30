@@ -15,19 +15,25 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Bookmark
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -40,8 +46,7 @@ import com.cueback.app.AppContainer
 import com.cueback.app.CueBackApp
 import com.cueback.app.core.model.Fact
 import com.cueback.app.core.model.Provenance
-import com.cueback.app.ui.theme.NoteSerif
-import com.cueback.app.ui.theme.Ribbon
+import com.cueback.app.ui.theme.Ember
 
 @Composable
 inline fun <reified T : ViewModel> containerViewModel(key: String? = null, crossinline create: (AppContainer) -> T): T {
@@ -56,57 +61,99 @@ fun provenanceLabel(p: Provenance) = when (p) {
     Provenance.UNKNOWN -> "Unknown"
 }
 
-/** Provenance is spelled out in words, never signalled by color alone. */
+/** Provenance is spelled out in words, never signalled by color or position alone. */
 @Composable
-fun ProvenanceTag(p: Provenance, modifier: Modifier = Modifier) {
-    val color = when (p) {
-        Provenance.USER -> MaterialTheme.colorScheme.primary
-        Provenance.DETECTED -> MaterialTheme.colorScheme.secondary
-        else -> MaterialTheme.colorScheme.onSurfaceVariant
+fun ProvenanceTag(p: Provenance, modifier: Modifier = Modifier, onFlame: Boolean = false) {
+    val color = when {
+        onFlame -> Ember.Ink
+        p == Provenance.USER -> Ember.Glow
+        p == Provenance.DETECTED -> Ember.Cream
+        else -> Ember.Ash
     }
     Text(
         provenanceLabel(p),
         style = MaterialTheme.typography.labelSmall,
         color = color,
         modifier = modifier
-            .border(1.dp, color.copy(alpha = 0.5f), RoundedCornerShape(50))
+            .border(1.dp, color.copy(alpha = 0.45f), CircleShape)
             .padding(horizontal = 8.dp, vertical = 2.dp),
     )
 }
 
+/**
+ * A fact, laid out as a line in a conversation. What you said sits on the right in flame; what Cue
+ * detected or inferred sits on the left, next to the owl. The provenance tag still says which in words.
+ */
 @Composable
 fun FactBlock(label: String, fact: Fact?, modifier: Modifier = Modifier, emptyText: String? = null) {
     if (fact == null && emptyText == null) return
-    Column(modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            Text(label, style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
-            fact?.let { ProvenanceTag(it.provenance) }
+    val mine = fact?.provenance == Provenance.USER
+    Row(
+        modifier.fillMaxWidth(),
+        horizontalArrangement = if (mine) Arrangement.End else Arrangement.Start,
+        verticalAlignment = Alignment.Top,
+    ) {
+        if (!mine) {
+            MascotAvatar(size = 26.dp, modifier = Modifier.padding(top = 2.dp))
+            Spacer(Modifier.width(8.dp))
         }
-        Text(fact?.text ?: emptyText!!, style = MaterialTheme.typography.bodyLarge, color = if (fact == null) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.onSurface)
+        val shape = RoundedCornerShape(
+            topStart = 20.dp,
+            topEnd = 20.dp,
+            bottomEnd = if (mine) 6.dp else 20.dp,
+            bottomStart = if (mine) 20.dp else 6.dp,
+        )
+        Column(
+            Modifier
+                .weight(1f, fill = false)
+                .widthIn(max = 320.dp)
+                .then(
+                    if (mine) Modifier.background(Brush.verticalGradient(listOf(Ember.Glow, Ember.Flame)), shape)
+                    else Modifier.glass(shape),
+                )
+                .padding(horizontal = 14.dp, vertical = 10.dp),
+            verticalArrangement = Arrangement.spacedBy(3.dp),
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text(label, style = MaterialTheme.typography.labelMedium, color = if (mine) Ember.Ink.copy(alpha = 0.72f) else Ember.Ash)
+                fact?.let { ProvenanceTag(it.provenance, onFlame = mine) }
+            }
+            Text(
+                fact?.text ?: emptyText!!,
+                style = MaterialTheme.typography.bodyLarge,
+                color = when {
+                    mine -> Ember.Ink
+                    fact == null -> Ember.Ash
+                    else -> Ember.Cream
+                },
+            )
+        }
     }
 }
 
 /** The signature element: a bookmark ribbon marking the exact next action. */
 @Composable
 fun RibbonNext(fact: Fact?, modifier: Modifier = Modifier, large: Boolean = true) {
-    Surface(
-        modifier = modifier.fillMaxWidth(),
-        shape = MaterialTheme.shapes.medium,
-        color = MaterialTheme.colorScheme.primaryContainer,
+    Row(
+        modifier
+            .fillMaxWidth()
+            .glass(MaterialTheme.shapes.large, Ember.GlassStrong)
+            .height(IntrinsicSize.Min),
     ) {
-        Row(Modifier.height(IntrinsicSize.Min)) {
-            Box(Modifier.width(6.dp).fillMaxHeight().background(Ribbon))
-            Column(Modifier.padding(horizontal = 16.dp, vertical = if (large) 18.dp else 12.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Text("Next", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onPrimaryContainer)
-                    fact?.let { ProvenanceTag(it.provenance) }
-                }
-                Text(
-                    fact?.text ?: "CueBack found where you stopped, but couldn't tell the next step.",
-                    style = if (large) MaterialTheme.typography.headlineMedium else MaterialTheme.typography.titleMedium.copy(fontFamily = NoteSerif),
-                    color = MaterialTheme.colorScheme.onPrimaryContainer,
-                )
+        Box(Modifier.width(5.dp).fillMaxHeight().background(Brush.verticalGradient(listOf(Ember.Core, Ember.Flame))))
+        Column(
+            Modifier.padding(horizontal = 18.dp, vertical = if (large) 18.dp else 14.dp),
+            verticalArrangement = Arrangement.spacedBy(6.dp),
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text("Next", style = MaterialTheme.typography.labelLarge, color = Ember.Glow)
+                fact?.let { ProvenanceTag(it.provenance) }
             }
+            Text(
+                fact?.text ?: "CueBack found where you stopped, but couldn't tell the next step.",
+                style = if (large) MaterialTheme.typography.headlineMedium else MaterialTheme.typography.titleMedium,
+                color = if (fact == null) Ember.Ash else Ember.Cream,
+            )
         }
     }
 }
@@ -119,20 +166,28 @@ fun AppIcon(packageName: String?, modifier: Modifier = Modifier, size: Int = 28)
         packageName?.takeIf { !it.startsWith("~") }?.let { app.container.catalog.iconOf(it) }?.toBitmap(96, 96)?.asImageBitmap()
     }
     if (bmp != null) {
-        Image(bmp, contentDescription = null, modifier = modifier.size(size.dp).clip(RoundedCornerShape(7.dp)))
+        Image(bmp, contentDescription = null, modifier = modifier.size(size.dp).clip(RoundedCornerShape((size / 4).dp)))
     } else {
-        Box(modifier.size(size.dp).clip(CircleShape).background(MaterialTheme.colorScheme.surfaceVariant))
+        // No app behind this place (saved by hand, or the app is gone): mark it with the bookmark.
+        Box(modifier.size(size.dp).clip(CircleShape).background(Color(0x29FFF3E8)), contentAlignment = Alignment.Center) {
+            Icon(Icons.Default.Bookmark, contentDescription = null, tint = Ember.Glow, modifier = Modifier.size((size * 0.6f).dp))
+        }
     }
 }
 
 @Composable
 fun SectionTitle(text: String, modifier: Modifier = Modifier) {
-    Text(text, style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onBackground, modifier = modifier.padding(top = 8.dp, bottom = 4.dp))
+    Text(
+        text,
+        style = MaterialTheme.typography.titleMedium,
+        color = Ember.Cream,
+        modifier = modifier.padding(top = 10.dp, bottom = 4.dp).semantics { heading() },
+    )
 }
 
 @Composable
 fun Hint(text: String, modifier: Modifier = Modifier) {
-    Text(text, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = modifier)
+    Text(text, style = MaterialTheme.typography.bodyMedium, color = Ember.Ash, modifier = modifier)
 }
 
 @Composable
@@ -145,7 +200,7 @@ fun ConfidenceText(confidence: Double, modifier: Modifier = Modifier) {
     Text(
         word,
         style = MaterialTheme.typography.labelSmall,
-        color = MaterialTheme.colorScheme.onSurfaceVariant,
+        color = Ember.Ash,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
         modifier = modifier.semantics { contentDescription = "$word, ${(confidence * 100).toInt()} percent" },

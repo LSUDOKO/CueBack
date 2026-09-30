@@ -7,6 +7,8 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,19 +17,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Mic
-import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -50,7 +43,13 @@ import com.cueback.app.core.model.NoteKind
 import com.cueback.app.core.model.UseCase
 import com.cueback.app.core.model.WorkEvent
 import com.cueback.app.platform.ArtifactPolicy
+import com.cueback.app.ui.components.EmberButton
+import com.cueback.app.ui.components.EmberChip
+import com.cueback.app.ui.components.EmberScaffold
+import com.cueback.app.ui.components.GlassTextField
 import com.cueback.app.ui.components.Hint
+import com.cueback.app.ui.components.MascotPose
+import com.cueback.app.ui.components.MascotSays
 import com.cueback.app.ui.components.containerViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -98,7 +97,7 @@ class CaptureViewModel(private val c: AppContainer) : ViewModel() {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun CaptureScreen(onBack: () -> Unit, onPaywall: () -> Unit) {
     val vm = containerViewModel { CaptureViewModel(it) }
@@ -118,28 +117,21 @@ fun CaptureScreen(onBack: () -> Unit, onPaywall: () -> Unit) {
         }
     }
 
-    Scaffold(
-        containerColor = MaterialTheme.colorScheme.background,
-        topBar = {
-            TopAppBar(
-                title = { Text("Save my place") },
-                navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back") } },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background),
-            )
-        },
-    ) { pad ->
+    EmberScaffold(title = "Save my place", onBack = onBack) { pad ->
         Column(
             Modifier.fillMaxSize().padding(pad).imePadding().verticalScroll(rememberScrollState()).padding(horizontal = 20.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
-            Hint(
-                if (ui.liveSession) "CueBack is already tracking this session. Anything you add here joins what it observed, and the session is paused now."
+            MascotSays(
+                if (ui.liveSession) "I'm already tracking this session. Anything you add here joins what I observed, and the session is paused now."
                 else "Only the next step matters. Everything else is optional.",
+                pose = MascotPose.Think,
+                size = 72.dp,
             )
-            OutlinedTextField(
+            GlassTextField(
                 value = next,
                 onValueChange = { if (it.length <= 300) next = it },
-                label = { Text("What were you about to do next?") },
+                label = "What were you about to do next?",
                 modifier = Modifier.fillMaxWidth(),
                 trailingIcon = {
                     IconButton(onClick = {
@@ -153,27 +145,35 @@ fun CaptureScreen(onBack: () -> Unit, onPaywall: () -> Unit) {
                 },
             )
             if (!ui.liveSession) {
-                OutlinedTextField(title, { if (it.length <= 80) title = it }, label = { Text("Task") }, modifier = Modifier.fillMaxWidth(), singleLine = true)
+                GlassTextField(title, { if (it.length <= 80) title = it }, label = "Task", modifier = Modifier.fillMaxWidth(), singleLine = true)
             }
-            OutlinedTextField(goal, { if (it.length <= 200) goal = it }, label = { Text("Goal (optional)") }, modifier = Modifier.fillMaxWidth())
-            OutlinedTextField(done, { if (it.length <= 200) done = it }, label = { Text("What you got done (optional)") }, modifier = Modifier.fillMaxWidth())
-            OutlinedTextField(blocker, { if (it.length <= 200) blocker = it }, label = { Text("What's in the way (optional)") }, modifier = Modifier.fillMaxWidth())
-            OutlinedTextField(link, { if (it.length <= 2048) link = it }, label = { Text("Link to reopen (optional)") }, modifier = Modifier.fillMaxWidth(), singleLine = true,
-                isError = link.isNotBlank() && ArtifactPolicy.safeWebUrl(link) == null,
-                supportingText = { if (link.isNotBlank() && ArtifactPolicy.safeWebUrl(link) == null) Text("Use an http or https link") })
+            GlassTextField(goal, { if (it.length <= 200) goal = it }, label = "Goal (optional)", modifier = Modifier.fillMaxWidth())
+            GlassTextField(done, { if (it.length <= 200) done = it }, label = "What you got done (optional)", modifier = Modifier.fillMaxWidth())
+            GlassTextField(blocker, { if (it.length <= 200) blocker = it }, label = "What's in the way (optional)", modifier = Modifier.fillMaxWidth())
+            val badLink = link.isNotBlank() && ArtifactPolicy.safeWebUrl(link) == null
+            GlassTextField(
+                link,
+                { if (it.length <= 2048) link = it },
+                label = "Link to reopen (optional)",
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
+                isError = badLink,
+                supportingText = if (badLink) "Use an http or https link" else null,
+            )
             if (!ui.liveSession) {
-                Row(horizontalArrangement = Arrangement.spacedBy(6.dp), modifier = Modifier.fillMaxWidth()) {
+                FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.fillMaxWidth()) {
                     listOf(UseCase.CODING, UseCase.STUDY, UseCase.WRITING, UseCase.RESEARCH).forEach { u ->
-                        FilterChip(selected = useCase == u, onClick = { useCase = u }, label = { Text(u.name.lowercase().replaceFirstChar(Char::uppercase)) })
+                        EmberChip(u.name.lowercase().replaceFirstChar(Char::uppercase), selected = useCase == u, onClick = { useCase = u }, single = true)
                     }
                 }
             }
             if (ui.atLimit && !ui.liveSession) Hint("Free keeps 3 open contexts. Saving this moves your oldest one to the archive.")
-            Button(
+            EmberButton(
+                "Save my place",
                 onClick = { vm.save(title, goal, done, blocker, next, link, useCase, onBack) },
                 enabled = ui.liveSession || title.isNotBlank() || next.isNotBlank(),
-                modifier = Modifier.fillMaxWidth().padding(vertical = 12.dp),
-            ) { Text("Save my place") }
+                modifier = Modifier.fillMaxWidth().padding(top = 8.dp, bottom = 20.dp),
+            )
         }
     }
 }

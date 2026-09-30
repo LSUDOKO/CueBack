@@ -1,10 +1,19 @@
 package com.cueback.app
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.SystemBarStyle
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -33,6 +42,7 @@ import com.cueback.app.ui.paywall.PaywallScreen
 import com.cueback.app.ui.settings.AppPickerScreen
 import com.cueback.app.ui.settings.SettingsScreen
 import com.cueback.app.ui.theme.CueBackTheme
+import com.cueback.app.ui.theme.LocalReducedMotion
 import kotlinx.coroutines.flow.MutableStateFlow
 
 object Routes {
@@ -53,7 +63,11 @@ class MainActivity : ComponentActivity() {
     private val pendingLink = MutableStateFlow<DeepLink?>(null)
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        enableEdgeToEdge()
+        // Dark-only app: keep the system bar icons light whatever the phone's theme is.
+        enableEdgeToEdge(
+            statusBarStyle = SystemBarStyle.dark(Color.TRANSPARENT),
+            navigationBarStyle = SystemBarStyle.dark(Color.TRANSPARENT),
+        )
         super.onCreate(savedInstanceState)
         pendingLink.value = DeepLinks.parse(intent?.dataString)
         val container = (application as CueBackApp).container
@@ -91,7 +105,16 @@ private fun CueBackNav(start: String, pendingLink: MutableStateFlow<DeepLink?>) 
         }
     }
 
-    NavHost(nav, startDestination = start) {
+    // One transition for the whole app: the new screen rises a little as it fades in.
+    val reduced = LocalReducedMotion.current
+    NavHost(
+        nav,
+        startDestination = start,
+        enterTransition = { if (reduced) EnterTransition.None else fadeIn(tween(240, delayMillis = 60)) + slideInVertically(tween(320)) { it / 24 } },
+        exitTransition = { if (reduced) ExitTransition.None else fadeOut(tween(120)) },
+        popEnterTransition = { if (reduced) EnterTransition.None else fadeIn(tween(220)) },
+        popExitTransition = { if (reduced) ExitTransition.None else fadeOut(tween(140)) + slideOutVertically(tween(220)) { it / 24 } },
+    ) {
         composable(Routes.ONBOARDING) {
             OnboardingScreen(onChooseApps = { nav.navigate(Routes.APPS) }, onDone = { nav.goHomeClearing() })
         }
