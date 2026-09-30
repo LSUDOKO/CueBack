@@ -43,7 +43,7 @@ private val grain: ImageBitmap by lazy {
     val side = 128
     val rnd = Random(7)
     val px = IntArray(side * side) {
-        val alpha = rnd.nextInt(30)
+        val alpha = rnd.nextInt(22)
         val v = if (rnd.nextBoolean()) 255 else 0
         (alpha shl 24) or (v shl 16) or (v shl 8) or v
     }

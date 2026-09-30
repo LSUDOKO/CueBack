@@ -112,10 +112,15 @@ class SettingsViewModel(val c: AppContainer) : ViewModel() {
         done()
     }
 
-    fun finishOnboarding(ctx: Context) = viewModelScope.launch {
+    /**
+     * Records that onboarding is done and starts detection. It suspends until the setting is on disk,
+     * so the caller can leave the screen only once that is true. It runs in the caller's scope, not
+     * this view model's: a view model job that was cancelled would end without saving anything.
+     */
+    suspend fun completeOnboarding(ctx: Context) {
         c.settings.update { it.copy(onboarded = true) }
         c.settings.setUsageCursor(c.clock())
-        Scheduler.schedule(ctx)
+        runCatching { Scheduler.schedule(ctx) }
         val s = c.settings.current()
         if (s.liveDetection && s.trackedApps.isNotEmpty()) runCatching { LiveDetectionService.start(ctx) }
     }

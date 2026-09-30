@@ -25,6 +25,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -56,12 +57,16 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.cueback.app.ui.theme.Backdrop
 import com.cueback.app.ui.theme.Ember
 import com.cueback.app.ui.theme.EmberBackdrop
 
 private val GlassStroke = Brush.verticalGradient(listOf(Ember.GlassStrokeTop, Ember.GlassStrokeBottom))
 private val FlameFill = Brush.verticalGradient(listOf(Ember.Glow, Ember.Flame, Color(0xFFF2560D)))
+
+/** Button labels step down in size before they truncate, so long labels survive large system text and narrow phones. */
+private val FitLabel = TextAutoSize.StepBased(minFontSize = 11.sp, maxFontSize = 15.sp, stepSize = 0.5.sp)
 
 /** Smoked glass: a translucent fill with a hairline that catches light along the top edge. */
 fun Modifier.glass(shape: Shape, fill: Color = Ember.Glass): Modifier =
@@ -146,6 +151,7 @@ fun EmberButton(
             color = Ember.Ink,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
+            autoSize = if (compact) null else FitLabel,
         )
     }
 }
@@ -180,7 +186,7 @@ fun GlassButton(
             Icon(icon, contentDescription = null, tint = contentColor, modifier = Modifier.size(18.dp))
             Spacer(Modifier.width(8.dp))
         }
-        Text(text, style = MaterialTheme.typography.labelLarge, color = contentColor, maxLines = 1, overflow = TextOverflow.Ellipsis)
+        Text(text, style = MaterialTheme.typography.labelLarge, color = contentColor, maxLines = 1, overflow = TextOverflow.Ellipsis, autoSize = FitLabel)
     }
 }
 

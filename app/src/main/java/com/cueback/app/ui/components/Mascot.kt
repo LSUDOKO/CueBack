@@ -77,6 +77,8 @@ fun Mascot(
     modifier: Modifier = Modifier,
     size: Dp = 160.dp,
     glow: Boolean = true,
+    /** How far the halo reaches, as a fraction of the owl's size. Above 0.5 it spills past the owl's own bounds. */
+    halo: Float = 0.72f,
     contentDescription: String? = null,
 ) {
     val reduced = LocalReducedMotion.current
@@ -108,15 +110,17 @@ fun Mascot(
                 val lift = bob?.value ?: 0f
                 // The halo slides the opposite way to the owl when the phone tilts, which reads as depth.
                 val haloCenter = center - Offset(tilt.value.x * r * 0.04f, tilt.value.y * r * 0.04f)
+                // The halo is nearly gone well before its edge, so a scroll container cutting it off leaves no visible line.
                 drawCircle(
                     Brush.radialGradient(
-                        0f to Ember.Flame.copy(alpha = 0.40f + 0.16f * p),
-                        0.55f to Ember.Rust.copy(alpha = 0.20f),
+                        0f to Ember.Flame.copy(alpha = 0.42f + 0.16f * p),
+                        0.5f to Ember.Rust.copy(alpha = 0.18f),
+                        0.82f to Ember.Rust.copy(alpha = 0.03f),
                         1f to Color.Transparent,
                         center = haloCenter,
-                        radius = r * 0.80f,
+                        radius = r * halo,
                     ),
-                    radius = r * 0.80f,
+                    radius = r * halo,
                     center = haloCenter,
                 )
                 // Light pooled on the ground. It tightens and dims as the owl rises.
@@ -175,7 +179,7 @@ fun MascotAvatar(modifier: Modifier = Modifier, size: Dp = 28.dp) {
 @Composable
 fun MascotSays(text: String, modifier: Modifier = Modifier, pose: MascotPose = MascotPose.Front, size: Dp = 68.dp) {
     Row(modifier, verticalAlignment = Alignment.Bottom, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-        Mascot(pose, size = size)
+        Mascot(pose, size = size, halo = 0.56f)
         Text(
             text,
             style = MaterialTheme.typography.bodyMedium,

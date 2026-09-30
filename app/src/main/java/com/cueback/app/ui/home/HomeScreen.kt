@@ -6,6 +6,9 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -236,8 +239,9 @@ fun HomeScreen(
                         modifier = Modifier.padding(horizontal = 22.dp),
                     )
                     VSpace(10)
+                    // Cards take the height of the tallest one, so they grow with large text instead of clipping it.
                     Row(
-                        Modifier.horizontalScroll(rememberScrollState()).padding(horizontal = 20.dp),
+                        Modifier.horizontalScroll(rememberScrollState()).padding(horizontal = 20.dp).height(IntrinsicSize.Max),
                         horizontalArrangement = Arrangement.spacedBy(10.dp),
                     ) {
                         rest.forEach { ctx -> ContextCard(ctx, onResume = { onWarmStart(ctx.id) }, onOpen = { onContext(ctx.id) }) }
@@ -346,7 +350,7 @@ private fun SuggestionCard(ctx: ContextCapsule, s: Suggestion, modifier: Modifie
 @Composable
 private fun ContextCard(ctx: ContextCapsule, onResume: () -> Unit, onOpen: () -> Unit) {
     GlassCard(
-        Modifier.width(222.dp).height(172.dp),
+        Modifier.width(248.dp).heightIn(min = 172.dp).fillMaxHeight(),
         onClick = onOpen,
         onClickLabel = "Open context",
         padding = androidx.compose.foundation.layout.PaddingValues(16.dp),
@@ -366,7 +370,7 @@ private fun ContextCard(ctx: ContextCapsule, onResume: () -> Unit, onOpen: () ->
             maxLines = 2,
             overflow = TextOverflow.Ellipsis,
         )
-        Spacer(Modifier.weight(1f))
+        Spacer(Modifier.weight(1f).heightIn(min = 12.dp))
         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             Column(Modifier.weight(1f)) {
                 Text(
@@ -404,7 +408,7 @@ private fun EmptyState(watching: Boolean, onCapture: () -> Unit, onChooseApps: (
             Modifier.padding(horizontal = 20.dp),
         )
         Row(
-            Modifier.horizontalScroll(rememberScrollState()).padding(horizontal = 20.dp),
+            Modifier.horizontalScroll(rememberScrollState()).padding(horizontal = 20.dp).height(IntrinsicSize.Max),
             horizontalArrangement = Arrangement.spacedBy(10.dp),
         ) {
             IdeaCard(Icons.Default.AutoAwesome, "Save my place now", onCapture)
@@ -417,13 +421,13 @@ private fun EmptyState(watching: Boolean, onCapture: () -> Unit, onChooseApps: (
 @Composable
 private fun IdeaCard(icon: ImageVector, label: String, onClick: () -> Unit) {
     GlassCard(
-        Modifier.width(150.dp).height(124.dp),
+        Modifier.width(150.dp).heightIn(min = 124.dp).fillMaxHeight(),
         shape = MaterialTheme.shapes.medium,
         onClick = onClick,
         padding = androidx.compose.foundation.layout.PaddingValues(14.dp),
     ) {
         Icon(icon, contentDescription = null, tint = Ember.Glow, modifier = Modifier.size(18.dp))
-        Spacer(Modifier.weight(1f))
+        Spacer(Modifier.weight(1f).heightIn(min = 14.dp))
         Text(label, style = MaterialTheme.typography.titleSmall, color = Ember.Cream)
     }
 }
@@ -433,7 +437,7 @@ private fun Notice(text: String, action: Pair<String, () -> Unit>?, dismiss: () 
     GlassCard(modifier.fillMaxWidth(), shape = MaterialTheme.shapes.medium, verticalArrangement = Arrangement.spacedBy(10.dp)) {
         Text(text, style = MaterialTheme.typography.bodyMedium, color = Ember.Cream)
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            action?.let { (label, f) -> EmberButton(label, f, compact = true) }
+            action?.let { (label, f) -> EmberButton(label, f) }
             GlassButton("Dismiss", dismiss)
         }
     }

@@ -72,6 +72,7 @@ import com.cueback.app.ui.settings.Toggle
 import com.cueback.app.ui.theme.Backdrop
 import com.cueback.app.ui.theme.Ember
 import com.cueback.app.ui.theme.EmberBackdrop
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 private const val PAGES = 4
@@ -92,6 +93,7 @@ fun OnboardingScreen(onChooseApps: () -> Unit, onDone: () -> Unit) {
         onPauseOrDispose { }
     }
     val notifPermission = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { notifOk = it }
+    var finishing by remember { mutableStateOf(false) }
 
     EmberBackdrop(Backdrop.Night) {
         Column(Modifier.fillMaxSize().statusBarsPadding().navigationBarsPadding().padding(horizontal = 22.dp, vertical = 16.dp)) {
@@ -181,7 +183,23 @@ fun OnboardingScreen(onChooseApps: () -> Unit, onDone: () -> Unit) {
                 Spacer(Modifier.weight(1f))
                 EmberButton(
                     if (page < PAGES - 1) "Continue" else "Start using CueBack",
-                    onClick = { if (page < PAGES - 1) page++ else scope.launch { vm.finishOnboarding(ctx).join(); onDone() } },
+                    enabled = !finishing,
+                    onClick = {
+                        if (page < PAGES - 1) page++
+                        else {
+                            finishing = true
+                            // Home opens only after the setting is saved; otherwise onboarding would reappear on the next launch.
+                            // Pinned to the main thread: the save resumes from a background thread, and navigation must not run there.
+                            scope.launch(Dispatchers.Main.immediate) {
+                                try {
+                                    vm.completeOnboarding(ctx)
+                                    onDone()
+                                } finally {
+                                    finishing = false
+                                }
+                            }
+                        }
+                    },
                 )
             }
         }

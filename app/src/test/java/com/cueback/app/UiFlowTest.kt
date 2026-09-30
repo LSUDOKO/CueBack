@@ -70,10 +70,14 @@ class UiFlowTest {
         rule.onNodeWithText("Turn on automatic detection").assertExists()
         shot("03_onboarding_setup")
         rule.onNodeWithText("Start using CueBack").performClick()
-        rule.waitUntil(5_000) { rule.onAllNodes(hasText("Pick up where you left off.")).fetchSemanticsNodes().isNotEmpty() }
+        // Done means both: Home is showing and the setting is saved. Looking up the node also lets the main thread run.
+        rule.waitUntil(5_000) {
+            rule.onAllNodes(hasText("Pick up where you left off.")).fetchSemanticsNodes().isNotEmpty() &&
+                runBlocking { app.container.settings.current().onboarded }
+        }
         runBlocking {
             val s = app.container.settings.current()
-            assertTrue(s.onboarded)
+            assertTrue("onboarding should be saved as done", s.onboarded)
             assertEquals(UseCase.STUDY, s.useCase)
         }
         shot("04_home_empty")

@@ -174,7 +174,7 @@ fun SettingsScreen(onBack: () -> Unit, onApps: () -> Unit, onPaywall: () -> Unit
                     )
                     if (vm.billingConfigured) {
                         FlowRow(Modifier.padding(bottom = 8.dp), horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                            if (!gate.pro) EmberButton("See Pro", onPaywall, compact = true)
+                            if (!gate.pro) EmberButton("See Pro", onPaywall)
                             GlassButton("Restore purchases", vm::restorePurchases)
                             if (gate.pro) GlassButton("Manage in Google Play", {
                                 ctx.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/account/subscriptions?package=${ctx.packageName}")))
