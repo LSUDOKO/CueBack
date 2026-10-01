@@ -455,7 +455,7 @@ Tested by hand on a Moto g34 (Android 15):
 
 - automatic pause and return detection; the *"You're back in Chrome"* notification opens the welcome-back card, Resume reopens the saved page, and the app measured "Back in 21 seconds";
 - RevenueCat Test Store: plans load from the current offering, a valid purchase unlocks `cueback_pro` and survives restarts, Restore works, failed and cancelled purchases show clear messages;
-- OneSignal: a test push, delivered through Firebase Cloud Messaging, reached the phone.
+- OneSignal: the live "Unfinished work" campaign was delivered to the phone, clicked, and opened the library.
 
 ## Project status
 
@@ -470,7 +470,7 @@ The product is complete and works end to end on a real phone. What's left is Pla
 | Share target, voice capture, artifact relaunch | ✅ Done | |
 | Privacy controls: pause collection, export, delete all, redaction, encrypted AI key | ✅ Done | Covered by privacy tests |
 | RevenueCat: offerings, purchase, restore, `cueback_pro` entitlement gates | ✅ Configured and verified | Test Store purchases on a phone |
-| OneSignal: init, tags, outcomes, deep links, FCM | ✅ Configured and verified | Test push delivered to the phone |
+| OneSignal: init, tags, outcomes, deep links, FCM | ✅ Configured and verified | "Unfinished work" segment, campaign and Journey live; delivered and clicked on the phone |
 | CI: unit tests, lint, R8 release build | ✅ Done | GitHub Actions |
 | Store release: Google Play products and `goog_` key, upload keystore, Play Console listing and data-safety form | ⏳ To do | Release builds are currently signed with the debug key |
 
