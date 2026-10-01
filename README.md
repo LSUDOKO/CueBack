@@ -19,6 +19,20 @@ CueBack is an Android app that notices when you step away from work on your phon
 
 </div>
 
+<div align="center">
+
+  <a href="https://www.youtube.com/watch?v=fGkSytG_1nw">
+    <img src="https://img.youtube.com/vi/fGkSytG_1nw/maxresdefault.jpg"
+         alt="CueBack Demo Video"
+         width="720">
+  </a>
+
+  <br>
+
+  **▶ Watch the CueBack Demo**
+
+</div>
+
 <p align="center">
   <img src="https://lsudoko.github.io/CueBack/images/banner.jpg" alt="CueBack banner featuring Cue the owl and the app in its dark Ember design" width="100%">
 </p>
