@@ -68,3 +68,26 @@ Build from source (see `docs/SETUP.md`). With no keys, the app runs fully and bi
 
 - App icon: `docs/submission/icon-1024.png` (1024×1024)
 - Screenshots: `docs/submission/screenshot-*.png` (1179×2556, no device frame)
+
+---
+
+## Keep Them Coming Back Award (OneSignal)
+
+**OneSignal App ID:** c9ad4529-e30c-4ff5-a578-73c954a6737b
+
+CueBack exists to get people back to unfinished work, so OneSignal is part of the core product.
+
+**Integration.** OneSignal SDK 5.10 is connected through Firebase Cloud Messaging and logs each install in with a random on-device ID (no account, no email). After every detection pass, CueBack syncs privacy-safe tags: `open_contexts`, `unresolved_with_next`, `last_pause_at`, `use_case` and `pro`. These are counts and timestamps only; task titles, notes, links and app names never leave the phone. Tapping a push deep-links into the app: a `context_id` in Additional Data opens that exact place's welcome-back card, and a launch URL like `cueback://library` opens the library. Opens and accepted welcome-back cards are reported as OneSignal outcomes (`notification_opened`, `warm_start_accepted`).
+
+**Deployed campaign.** Built in the OneSignal dashboard:
+1. A segment, "Unfinished work" (`unresolved_with_next > 0`): people who saved a place and wrote down their next step but haven't finished it.
+2. A push, "Your place is still saved. You left a next step waiting. Tap to pick up where you stopped.", with launch URL `cueback://library`.
+3. A live Journey, "Unfinished work reminder": enter on the segment, wait 1 day, send the push, exit. Users exit early if they open CueBack on their own or finish the work, and can enter only once, so nobody is nagged.
+
+**Value to users.** The reminder is about the user's own unfinished work, backed by a next step they wrote themselves, not a generic "we miss you". One tap lands them in the library, and one more reopens the exact page they left.
+
+**Reliability.** If OneSignal fails to start, the app keeps working, and CueBack's local "You're back" notifications don't depend on push.
+
+**Results.** The app hasn't launched publicly, so results come from our own test phone (Moto g34, Android 15): the campaign message was delivered to 1 device and clicked once (100% click-through), and it opened the library with the saved place and its next step. Next, we'd test the reminder delay (one day vs. the same evening) and add an in-app message for users who return without opening a place.
+
+Screenshots: docs/images/onesignal/journey.png and docs/images/onesignal/campaign-report.png
