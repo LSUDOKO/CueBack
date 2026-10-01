@@ -481,6 +481,7 @@ See the [roadmap](docs/ROADMAP.md) for the phase-by-phase plan.
 | Document | What's inside |
 |---|---|
 | [docs/SETUP.md](docs/SETUP.md) | Build, keys, RevenueCat, OneSignal and Firebase setup, testing on a phone |
+| [docs/ONESIGNAL.md](docs/ONESIGNAL.md) | OneSignal integration, the live "Unfinished work" campaign and Journey, and results |
 | [docs/BUSINESS_MODEL.md](docs/BUSINESS_MODEL.md) | Who pays, Free and Pro, plans, paywall timing, RevenueCat integration |
 | [docs/MONETIZATION.md](docs/MONETIZATION.md) | The original monetization plan |
 | [docs/ROADMAP.md](docs/ROADMAP.md) | Scope, build phases and status |
