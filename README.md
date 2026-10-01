@@ -15,21 +15,15 @@ CueBack is an Android app that notices when you step away from work on your phon
 ![RevenueCat](https://img.shields.io/badge/billing-RevenueCat-F2545B)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue)](LICENSE)
 
-[Website](https://lsudoko.github.io/CueBack/) · [Demo video script](docs/demo/SCRIPT.md) · [Setup](docs/SETUP.md) · [Business model](docs/BUSINESS_MODEL.md) · [Privacy](PRIVACY_POLICY.md)
+<br><br>
 
-</div>
+[![Watch the CueBack Demo](https://img.youtube.com/vi/fGkSytG_1nw/maxresdefault.jpg)](https://youtu.be/fGkSytG_1nw)
 
-<div align="center">
+<sub>▶ Click the image above to watch the demo video on YouTube</sub>
 
-  <a href="https://www.youtube.com/watch?v=fGkSytG_1nw">
-    <img src="https://img.youtube.com/vi/fGkSytG_1nw/maxresdefault.jpg"
-         alt="CueBack Demo Video"
-         width="720">
-  </a>
+<br><br>
 
-  <br>
-
-  **▶ Watch the CueBack Demo**
+[Website](https://lsudoko.github.io/CueBack/) · [Watch Demo](https://youtu.be/fGkSytG_1nw) · [Demo Script](docs/demo/SCRIPT.md) · [Setup](docs/SETUP.md) · [Business Model](docs/BUSINESS_MODEL.md) · [Privacy](PRIVACY_POLICY.md)
 
 </div>
 
