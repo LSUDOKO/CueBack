@@ -35,6 +35,7 @@ CueBack is an Android app that notices when you step away from work on your phon
 - [Screens](#screens)
 - [Features](#features)
 - [Business model](#business-model)
+- [Bringing people back (OneSignal)](#bringing-people-back-onesignal)
 - [Privacy](#privacy)
 - [How to use CueBack from this repo](#how-to-use-cueback-from-this-repo)
 - [Architecture](#architecture)
@@ -229,6 +230,22 @@ These are starting prices to test, not market findings.
 **What RevenueCat gives us:** prices and packages that change from the dashboard without an app release, Experiments for testing prices and a trial, charts and a per-customer entitlement history, and receipt validation without a CueBack backend.
 
 **Next:** Google Play products and the `goog_` key, a price experiment, a free trial on annual, paywall copy variants, and promo access for judges. CueBack isn't on the Play Store yet, so there's no revenue to report; the dashboard holds only Test Store sandbox data from our own testing.
+
+## Bringing people back (OneSignal)
+
+CueBack's job is getting people back to unfinished work, so push is part of the product.
+
+- **Privacy-safe tags only:** counts and timestamps (`open_contexts`, `unresolved_with_next`, `last_pause_at`, `use_case`, `pro`), never task content.
+- **Live campaign, "Unfinished work":** a segment of people with a saved place and a next step still waiting. A Journey waits a day, then sends *"Your place is still saved. You left a next step waiting."* Tapping it opens the library.
+- **Exits early:** when the user opens CueBack on their own, or finishes the work. Each person can enter only once.
+- **Verified on our test phone:** delivered, clicked, and it opened the library (1 of 1 delivered, 100% click-through).
+
+<p align="center">
+  <img src="https://lsudoko.github.io/CueBack/images/onesignal/journey.png" alt="OneSignal Journey: entry on the Unfinished work segment, wait 1 day, push notification, exit" width="49%">
+  <img src="https://lsudoko.github.io/CueBack/images/onesignal/campaign-report.png" alt="OneSignal campaign report: 1 delivered, 1 click, 100% click-through" width="49%">
+</p>
+
+Details: [docs/ONESIGNAL.md](docs/ONESIGNAL.md)
 
 ## Privacy
 
