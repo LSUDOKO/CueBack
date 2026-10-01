@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="docs/images/logo-wordmark.png" alt="CueBack logo: Cue the owl beside the CueBack wordmark" width="360">
+<img src="https://lsudoko.github.io/CueBack/images/logo-wordmark.png" alt="CueBack logo: Cue the owl beside the CueBack wordmark" width="360">
 
 ### The resume button for your brain
 
@@ -20,7 +20,7 @@ CueBack is an Android app that notices when you step away from work on your phon
 </div>
 
 <p align="center">
-  <img src="docs/images/banner.jpg" alt="CueBack banner featuring Cue the owl and the app in its dark Ember design" width="100%">
+  <img src="https://lsudoko.github.io/CueBack/images/banner.jpg" alt="CueBack banner featuring Cue the owl and the app in its dark Ember design" width="100%">
 </p>
 
 <p align="center"><sub>Built for RevenueCat Shipaton 2026, Next Gen (student) track. Open source under Apache 2.0.</sub></p>
@@ -59,28 +59,28 @@ The whole loop below was recorded on a real phone (a Moto g34 on Android 15). Th
 <table>
   <tr>
     <td align="center" width="50%">
-      <img src="docs/images/gifs/save-your-place.gif" alt="Sharing a Chrome page to CueBack and typing the next step: Redo 7b, convert km to m first" width="260"><br>
+      <img src="https://lsudoko.github.io/CueBack/images/gifs/save-your-place.gif" alt="Sharing a Chrome page to CueBack and typing the next step: Redo 7b, convert km to m first" width="260"><br>
       <b>1. Save your place.</b><br>Share the page to CueBack and write the next step in your own words.
     </td>
     <td align="center" width="50%">
-      <img src="docs/images/gifs/youre-back.gif" alt="Opening Chrome again brings up a notification that says You're back in Chrome, with the next step" width="260"><br>
+      <img src="https://lsudoko.github.io/CueBack/images/gifs/youre-back.gif" alt="Opening Chrome again brings up a notification that says You're back in Chrome, with the next step" width="260"><br>
       <b>2. You're back.</b><br>Open the same app later and CueBack notices, with your next step in the notification.
     </td>
   </tr>
   <tr>
     <td align="center" width="50%">
-      <img src="docs/images/gifs/welcome-back.gif" alt="The welcome-back card leads with the next step labelled You said, then reopens the saved page when Resume is tapped" width="260"><br>
+      <img src="https://lsudoko.github.io/CueBack/images/gifs/welcome-back.gif" alt="The welcome-back card leads with the next step labelled You said, then reopens the saved page when Resume is tapped" width="260"><br>
       <b>3. Welcome back, then Resume.</b><br>The card leads with your next step. Resume reopens the exact page you saved.
     </td>
     <td align="center" width="50%">
-      <img src="docs/images/gifs/back-in.gif" alt="CueBack shows Back in 21 seconds after the user returns to real work" width="260"><br>
+      <img src="https://lsudoko.github.io/CueBack/images/gifs/back-in.gif" alt="CueBack shows Back in 21 seconds after the user returns to real work" width="260"><br>
       <b>4. Back in 21 seconds.</b><br>CueBack measures how long it took to get back to real work.
     </td>
   </tr>
 </table>
 
 <p align="center">
-  <img src="docs/images/how-it-works.png" alt="Diagram of how CueBack works, from watching the apps you chose to noticing a pause, keeping your place, matching your return and giving your place back" width="100%">
+  <img src="https://lsudoko.github.io/CueBack/images/how-it-works.png" alt="Diagram of how CueBack works, from watching the apps you chose to noticing a pause, keeping your place, matching your return and giving your place back" width="100%">
 </p>
 
 Everything runs on the phone, in a small context engine written in pure Kotlin:
@@ -96,7 +96,7 @@ Every threshold lives in one file, [`EngineConfig.kt`](app/src/main/java/com/cue
 ## Not just for studying
 
 <p align="center">
-  <img src="docs/images/gifs/other-apps.gif" alt="Saving places in YouTube at the minute of a lecture, in GitHub on a file under review, and in Chrome on a research article" width="300">
+  <img src="https://lsudoko.github.io/CueBack/images/gifs/other-apps.gif" alt="Saving places in YouTube at the minute of a lecture, in GitHub on a file under review, and in Chrome on a research article" width="300">
 </p>
 
 CueBack works in any app you choose to watch, and with anything you can share:
@@ -107,14 +107,14 @@ CueBack works in any app you choose to watch, and with anything you can share:
 - **A long application form.** Save the page and what's still missing. With Pro, you get one reminder if you leave it waiting.
 
 <p align="center">
-  <img src="docs/images/gifs/library.gif" alt="The library lists every saved place; searching and opening one shows its details and a Resume button" width="300"><br>
+  <img src="https://lsudoko.github.io/CueBack/images/gifs/library.gif" alt="The library lists every saved place; searching and opening one shows its details and a Resume button" width="300"><br>
   <sub>Every place you've saved lives in the library, searchable, one tap from Resume.</sub>
 </p>
 
 ## Screens
 
 <p align="center">
-  <img src="docs/images/gallery.jpg" alt="Overview of CueBack screens in the dark Ember design with Cue the owl" width="100%">
+  <img src="https://lsudoko.github.io/CueBack/images/gallery.jpg" alt="Overview of CueBack screens in the dark Ember design with Cue the owl" width="100%">
 </p>
 
 <details open>
@@ -125,10 +125,10 @@ CueBack works in any app you choose to watch, and with anything you can share:
 
 <table>
   <tr>
-    <td align="center"><img src="docs/images/screens/onboarding.png" alt="Onboarding: Cue the owl and the line Don't save the task. Save your place." width="180"><br><sub>Meet Cue</sub></td>
-    <td align="center"><img src="docs/images/screens/privacy.png" alt="Privacy explainer: what CueBack sees, what it never records, and where the data lives" width="180"><br><sub>Private by design</sub></td>
-    <td align="center"><img src="docs/images/screens/use-case.png" alt="Choosing what you mostly do: coding, study, writing, research, design or general" width="180"><br><sub>Tuned to your work</sub></td>
-    <td align="center"><img src="docs/images/screens/setup.png" alt="Setup: allow usage access, choose apps to watch, allow notifications and turn on live detection" width="180"><br><sub>Three switches</sub></td>
+    <td align="center"><img src="https://lsudoko.github.io/CueBack/images/screens/onboarding.png" alt="Onboarding: Cue the owl and the line Don't save the task. Save your place." width="180"><br><sub>Meet Cue</sub></td>
+    <td align="center"><img src="https://lsudoko.github.io/CueBack/images/screens/privacy.png" alt="Privacy explainer: what CueBack sees, what it never records, and where the data lives" width="180"><br><sub>Private by design</sub></td>
+    <td align="center"><img src="https://lsudoko.github.io/CueBack/images/screens/use-case.png" alt="Choosing what you mostly do: coding, study, writing, research, design or general" width="180"><br><sub>Tuned to your work</sub></td>
+    <td align="center"><img src="https://lsudoko.github.io/CueBack/images/screens/setup.png" alt="Setup: allow usage access, choose apps to watch, allow notifications and turn on live detection" width="180"><br><sub>Three switches</sub></td>
   </tr>
 </table>
 
@@ -136,10 +136,10 @@ CueBack works in any app you choose to watch, and with anything you can share:
 
 <table>
   <tr>
-    <td align="center"><img src="docs/images/screens/home-empty.png" alt="Home screen before anything is saved" width="180"><br><sub>Home, first run</sub></td>
-    <td align="center"><img src="docs/images/screens/capture.png" alt="Capture screen for saving your place and the next step" width="180"><br><sub>Save your place</sub></td>
-    <td align="center"><img src="docs/images/screens/home.png" alt="Home screen with a saved place" width="180"><br><sub>Home</sub></td>
-    <td align="center"><img src="docs/images/screens/library.png" alt="Library of saved contexts with search" width="180"><br><sub>Library</sub></td>
+    <td align="center"><img src="https://lsudoko.github.io/CueBack/images/screens/home-empty.png" alt="Home screen before anything is saved" width="180"><br><sub>Home, first run</sub></td>
+    <td align="center"><img src="https://lsudoko.github.io/CueBack/images/screens/capture.png" alt="Capture screen for saving your place and the next step" width="180"><br><sub>Save your place</sub></td>
+    <td align="center"><img src="https://lsudoko.github.io/CueBack/images/screens/home.png" alt="Home screen with a saved place" width="180"><br><sub>Home</sub></td>
+    <td align="center"><img src="https://lsudoko.github.io/CueBack/images/screens/library.png" alt="Library of saved contexts with search" width="180"><br><sub>Library</sub></td>
   </tr>
 </table>
 
@@ -147,13 +147,13 @@ CueBack works in any app you choose to watch, and with anything you can share:
 
 <table>
   <tr>
-    <td align="center"><img src="docs/images/screens/welcome-back.png" alt="Welcome-back card with the next step first, labelled You said" width="180"><br><sub>Welcome back</sub></td>
-    <td align="center"><img src="docs/images/screens/measuring.png" alt="CueBack measuring re-entry while you get back to work" width="180"><br><sub>Measuring</sub></td>
-    <td align="center"><img src="docs/images/screens/back-in.png" alt="Re-entry result: Back in 21 seconds" width="180"><br><sub>Back in 21 seconds</sub></td>
-    <td align="center"><img src="docs/images/screens/context.png" alt="Context detail: notes, artifacts, re-entry history and timeline" width="180"><br><sub>Context detail</sub></td>
+    <td align="center"><img src="https://lsudoko.github.io/CueBack/images/screens/welcome-back.png" alt="Welcome-back card with the next step first, labelled You said" width="180"><br><sub>Welcome back</sub></td>
+    <td align="center"><img src="https://lsudoko.github.io/CueBack/images/screens/measuring.png" alt="CueBack measuring re-entry while you get back to work" width="180"><br><sub>Measuring</sub></td>
+    <td align="center"><img src="https://lsudoko.github.io/CueBack/images/screens/back-in.png" alt="Re-entry result: Back in 21 seconds" width="180"><br><sub>Back in 21 seconds</sub></td>
+    <td align="center"><img src="https://lsudoko.github.io/CueBack/images/screens/context.png" alt="Context detail: notes, artifacts, re-entry history and timeline" width="180"><br><sub>Context detail</sub></td>
   </tr>
   <tr>
-    <td align="center"><img src="docs/images/screens/settings.png" alt="Settings: detection, notifications, privacy controls and subscription" width="180"><br><sub>Settings</sub></td>
+    <td align="center"><img src="https://lsudoko.github.io/CueBack/images/screens/settings.png" alt="Settings: detection, notifications, privacy controls and subscription" width="180"><br><sub>Settings</sub></td>
     <td></td><td></td><td></td>
   </tr>
 </table>
@@ -186,7 +186,7 @@ Also:
 ## Business model
 
 <p align="center">
-  <img src="docs/images/business-model.png" alt="CueBack business model diagram: the Free and Pro plans, the cueback_pro entitlement in RevenueCat, and the monthly, annual and lifetime plans" width="100%">
+  <img src="https://lsudoko.github.io/CueBack/images/business-model.png" alt="CueBack business model diagram: the Free and Pro plans, the cueback_pro entitlement in RevenueCat, and the monthly, annual and lifetime plans" width="100%">
 </p>
 
 CueBack is freemium, with billing through [RevenueCat](https://www.revenuecat.com). The full write-up is in [docs/BUSINESS_MODEL.md](docs/BUSINESS_MODEL.md).
@@ -212,7 +212,7 @@ These are starting prices to test, not market findings.
 **Value first.** The paywall opens once, **right after your first successful return**, when CueBack has just said "Back in 21 seconds". Its headline is "Keep that continuity across every project." It never blocks the core loop: *Continue free* is always one tap away, and after that first time the paywall appears only when you reach for a Pro feature or tap *See Pro*.
 
 <p align="center">
-  <img src="docs/images/gifs/pro-purchase.gif" alt="The Pro paywall loads monthly, annual and lifetime plans from RevenueCat; a Test Store purchase ends on You have CueBack Pro" width="300"><br>
+  <img src="https://lsudoko.github.io/CueBack/images/gifs/pro-purchase.gif" alt="The Pro paywall loads monthly, annual and lifetime plans from RevenueCat; a Test Store purchase ends on You have CueBack Pro" width="300"><br>
   <sub>A real RevenueCat Test Store purchase on the phone, ending on "You have CueBack Pro".</sub>
 </p>
 
@@ -284,7 +284,7 @@ CueBack appears in your app drawer.
 
 <table>
   <tr>
-    <td width="300" align="center"><img src="docs/images/gifs/onboarding.gif" alt="Onboarding: meet Cue, read what CueBack sees, pick a use case and turn on the three switches" width="260"></td>
+    <td width="300" align="center"><img src="https://lsudoko.github.io/CueBack/images/gifs/onboarding.gif" alt="Onboarding: meet Cue, read what CueBack sees, pick a use case and turn on the three switches" width="260"></td>
     <td>
 
 1. **Meet Cue** and read what CueBack sees and never records.
